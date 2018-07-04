@@ -1,15 +1,13 @@
 #pragma once
 #include "Particle.h"
+#include <vector>
 
-using namespace std;
-
-class vhs
-{
-	Particle *particles[];
+class vhs{
+	std::vector <Particle> particles;
 	Particle Target;
 	public:
 		vhs(); //Initialize with particles
-		bool run(); //Run vhs simulation
+		int run(); //Run vhs simulation
 		~vhs();
 };
 
