@@ -29,6 +29,5 @@ float Vector :: getNorm() {
 float Vector :: angleToOrigin() {
 	return( atan(y / x));
 }
-Vector::~Vector()
-{
+Vector::~Vector(){
 }
