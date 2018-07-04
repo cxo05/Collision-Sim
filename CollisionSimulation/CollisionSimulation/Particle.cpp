@@ -5,24 +5,24 @@
 Particle::Particle() {
 	std::cout << "Created default Particle" << std::endl;
 	diameter = 1;
-	initialVelocity = ;
+	initialVelocity = new Vector;
 }
 
-Particle::Particle(float diameter, Vector initVelocity){
+Particle::Particle(float diameter, Vector *initVelocity){
 	std::cout << "Created Particle with diameter " << diameter << std::endl;
 	diameter = diameter;
 	initialVelocity = initVelocity;
 }
 
 Vector Particle::getinitialVelocity(){
-	return intialVelocity;
+	return *initialVelocity;
 }
 
 Vector Particle::getfinalVelocity(){
-	return finalVelocity;
+	return *finalVelocity;
 }
 
-void Particle::setfinalVelocity(Vector v) {
+void Particle::setfinalVelocity(Vector *v) {
 	finalVelocity = v;
 }
 
