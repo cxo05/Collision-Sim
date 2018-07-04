@@ -26,6 +26,14 @@ int vhs::run() {
 		Vector v1 = Vector();
 		Vector v2 = Vector();
 		float angle;
+
+		//TODO Calculate angle
+		// d = d_ref (C_r,ref / C_r)^v
+		// v = w - 1/2
+		//Slope of perpendicular line is negative reciprocal of v1
+		//Find point of intersection between velocity vector of 1 and perpendicular line with a point that is 2's position > Z
+		//Center of particle 1 at point of contact : Z - (sqrt(c^2-b^2))(v1/v1.norm())
+
 		v1.setXCoordinate(
 			u1.getXCoordinate() +
 			cos(angle) * (
