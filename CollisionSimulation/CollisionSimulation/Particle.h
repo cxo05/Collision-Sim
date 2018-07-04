@@ -4,14 +4,14 @@
 class Particle
 {
 	float diameter;
-	Vector initialVelocity;
-	Vector finalVelocity;
+	Vector *initialVelocity;
+	Vector *finalVelocity;
 
 	public:
 		Particle();
-		Particle(float diameter, Vector initVelocity);
+		Particle(float diameter, Vector *initVelocity);
 		Vector getinitialVelocity();
 		Vector getfinalVelocity();
-		void setfinalVelocity(Vector v);
+		void setfinalVelocity(Vector *v);
 		~Particle();
 };
