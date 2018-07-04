@@ -1,25 +1,30 @@
-#pragma once
+#include "Vector.h"
+using namespace std;
 
-#ifndef VECTOR_H
-#define VECTOR_H
+Vector :: Vector(float x, float y, float z) 
+	: x(x), y(y), z(z)
+{}
 
-#include <math.h>
+float Vector :: getXCoordinate() {
+	return x;
+}
 
-class Vector {
+float Vector :: getYCoordinate() {
+	return y;
+}
 
-	private :
-		float x;
-		float y;
-		float z;
-	
-	public :
-		Vector(float x, float y, float z);
-		float getXCoordinate();
-		float getYCoordinate();
-		float getZCoordinate();
-		float getMagnitude();
-		float getNorm();
-		float angleToOrigin();
-};
+float Vector :: getZCoordinate() {
+	return z;
+}
 
-#endif
+float Vector :: getMagnitude() {
+	return sqrt((x*x) + (y*y) + (z*z));
+}
+
+float Vector :: getNorm() {
+	return (x / getMagnitude(), y / getMagnitude(), z / getMagnitude());
+}
+ 
+float Vector :: angleToOrigin() {
+	// TODO calculate angle to origin
+} 
