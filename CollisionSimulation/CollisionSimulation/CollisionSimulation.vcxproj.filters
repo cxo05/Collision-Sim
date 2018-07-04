@@ -27,15 +27,15 @@
     <ClInclude Include="vhs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CollisionSimulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -46,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="Vector.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
