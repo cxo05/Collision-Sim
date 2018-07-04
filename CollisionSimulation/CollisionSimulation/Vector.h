@@ -1,6 +1,4 @@
 #pragma once
-#ifndef VECTOR_H
-#define VECTOR_H
 
 class Vector
 {
@@ -18,5 +16,3 @@ public:
 	float angleToOrigin();
 	~Vector();
 };
-
-#endif

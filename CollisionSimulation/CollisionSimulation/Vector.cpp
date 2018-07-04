@@ -1,5 +1,5 @@
 #include "Vector.h"
-#include "cmath"
+#include "math.h"
 using namespace std;
 
 Vector :: Vector(float x, float y, float z) 
@@ -27,7 +27,7 @@ float Vector :: getNorm() {
 }
  
 float Vector :: angleToOrigin() {
-	return( atan(y / x));
+	return(atan(y / x));
 }
 Vector::~Vector()
 {
