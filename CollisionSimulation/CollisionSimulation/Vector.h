@@ -1,38 +1,30 @@
-#include <math.h>
+#include "Vector.h"
+using namespace std;
 
-class Vector {
-	//Positions relative to origin
-	private float x, y, z;
-	
-	public:
+Vector :: Vector(float x, float y, float z) 
+	: x(x), y(y), z(z)
+{}
 
-	Vector(float x, float y, float z) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
-	}
-
-	float getXCoordinate() {
-		return x;
-	}
-
-	float getYCoordinate() {
-		return y;
-	}
-
-	float getZCoordinate() {
-		return z;
-	}
-
-	float getMagnitude() {
-		return sqrt((x*x)+(y*y)+(z*z));
-	}
-
-	float getNormal() {
-		return Vector(x/getMagnitude(),y/getMagnitude(),z/getMagnitude());
-	}
-
-	static float angleToOrigin(vector v) {
-		// TODO calculate angle to origin
-	}
+float Vector :: getXCoordinate() {
+	return x;
 }
+
+float Vector :: getYCoordinate() {
+	return y;
+}
+
+float Vector :: getZCoordinate() {
+	return z;
+}
+
+float Vector :: getMagnitude() {
+	return sqrt((x*x) + (y*y) + (z*z));
+}
+
+float Vector :: getNorm() {
+	return (x / getMagnitude(), y / getMagnitude(), z / getMagnitude());
+}
+ 
+float Vector :: angleToOrigin() {
+	// TODO calculate angle to origin
+} 
