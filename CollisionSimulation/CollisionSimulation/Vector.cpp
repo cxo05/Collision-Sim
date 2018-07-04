@@ -37,5 +37,13 @@ void Vector::addVector(const float x2, const float y2) {
 	y += y2 * sin(angleToOrigin);
 }
 
+void Vector :: setXCoordinate(const float newX) {
+	x = newX;
+}
+
+void Vector::setXCoordinate(const float newY) {
+	x = newY;
+}
+
 Vector::~Vector() {
 }
