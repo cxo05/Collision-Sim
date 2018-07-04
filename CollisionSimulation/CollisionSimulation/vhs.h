@@ -11,6 +11,7 @@ class vhs
 		void addParticle(Particle *particle);
 		void addParticles(std::vector <Particle*> particles);
 		int run(); //Run vhs simulation
+		void showfinalVelocities();
 		~vhs();
 };
 

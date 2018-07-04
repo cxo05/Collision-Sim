@@ -41,7 +41,7 @@ void Vector :: setXCoordinate(const float newX) {
 	x = newX;
 }
 
-void Vector::setXCoordinate(const float newY) {
+void Vector::setYCoordinate(const float newY) {
 	x = newY;
 }
 
