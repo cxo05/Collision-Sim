@@ -8,8 +8,8 @@ class Particle
 	Vector finalVelocity;
 
 	public:
-	Particle(float diameter);
-	Vector getinitialVelocity();
-	Vector getfinalVelocity();
-	~Particle();
+		Particle(float diameter);
+		Vector getinitialVelocity();
+		Vector getfinalVelocity();
+		~Particle();
 };
