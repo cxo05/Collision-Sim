@@ -2,10 +2,16 @@
 #include "Particle.h"
 #include <iostream>
 
+Particle::Particle() {
+	std::cout << "Created default Particle" << std::endl;
+	diameter = 1;
+	initialVelocity = ;
+}
+
 Particle::Particle(float diameter, Vector initVelocity){
 	std::cout << "Created Particle with diameter " << diameter << std::endl;
 	diameter = diameter;
-	intialVelocity = initVelocity;
+	initialVelocity = initVelocity;
 }
 
 Vector Particle::getinitialVelocity(){

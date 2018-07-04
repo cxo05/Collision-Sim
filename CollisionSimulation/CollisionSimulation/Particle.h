@@ -4,10 +4,11 @@
 class Particle
 {
 	float diameter;
-	Vector intialVelocity;
+	Vector initialVelocity;
 	Vector finalVelocity;
 
 	public:
+		Particle();
 		Particle(float diameter, Vector initVelocity);
 		Vector getinitialVelocity();
 		Vector getfinalVelocity();
