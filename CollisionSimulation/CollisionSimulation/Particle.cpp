@@ -22,6 +22,14 @@ Vector Particle::getfinalVelocity(){
 	return *finalVelocity;
 }
 
+float Particle::getinitialPositionX() {
+	return initialPosX;
+}
+
+float Particle::getinitialPositionY() {
+	return initialPosY;
+}
+
 void Particle::setfinalVelocity(Vector *v) {
 	finalVelocity = v;
 }

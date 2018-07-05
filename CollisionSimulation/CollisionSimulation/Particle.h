@@ -4,6 +4,7 @@
 class Particle
 {
 	float diameter;
+	float initialPosX, initialPosY;
 	Vector *initialVelocity;
 	Vector *finalVelocity;
 
@@ -12,6 +13,8 @@ class Particle
 		Particle(float diameter, Vector *initVelocity);
 		Vector getinitialVelocity();
 		Vector getfinalVelocity();
+		float getinitialPositionX();
+		float getinitialPositionY();
 		void setfinalVelocity(Vector *v);
 		~Particle();
 };
