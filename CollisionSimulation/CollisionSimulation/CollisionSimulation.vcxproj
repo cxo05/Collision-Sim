@@ -102,12 +102,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;GSL_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libgsl_dll_d.lib;libgslcblas_dll_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,6 +148,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="gsl_inline.h" />
+    <ClInclude Include="gsl_integration.h" />
+    <ClInclude Include="gsl_machine.h" />
+    <ClInclude Include="gsl_math.h" />
+    <ClInclude Include="gsl_minmax.h" />
+    <ClInclude Include="gsl_nan.h" />
+    <ClInclude Include="gsl_pow_int.h" />
+    <ClInclude Include="gsl_precision.h" />
+    <ClInclude Include="gsl_sys.h" />
+    <ClInclude Include="gsl_types.h" />
+    <ClInclude Include="Ipl.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="stdafx.h" />
@@ -155,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionSimulation.cpp" />
+    <ClCompile Include="Ipl.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
