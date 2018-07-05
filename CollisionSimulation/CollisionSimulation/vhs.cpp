@@ -18,14 +18,20 @@ void vhs::addParticles(vector <Particle*> newParticles) {
 	particles.insert(particles.end(), newParticles.begin(), newParticles.end());
 }
 
+void vhs::setTarget(Particle particle) {
+	cout << "Added Target" << endl;
+	Target = particle;
+}
+
 int vhs::run() {
+	cout << "Running VHS..." << endl;
 	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
 		//*it.getinitialVelocity(); TODO Use particle velocities
 		Vector u1 = Vector();
 		Vector u2 = Vector();
 		Vector v1 = Vector();
 		Vector v2 = Vector();
-		float angle;
+		float angle = 0.0;
 
 		//TODO Calculate angle
 		// d = d_ref (C_r,ref / C_r)^v
@@ -68,12 +74,19 @@ int vhs::run() {
 
 
 	}
+	cout << "VHS ended" << endl;
 	return 1;
 }
 
 void vhs::showfinalVelocities() {
 	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
 		cout << ((*it)->getfinalVelocity()).toString() << endl;
+	}
+}
+
+void vhs::showParticles() {
+	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
+		cout << "(" << (*it)->getinitialPositionX() << " , " << (*it)->getinitialPositionY() << ") Velocity: " << ((*it)->getinitialVelocity()).toString() << endl;
 	}
 }
 

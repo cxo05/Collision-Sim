@@ -8,10 +8,12 @@ Particle::Particle() {
 	initialVelocity = new Vector;
 }
 
-Particle::Particle(float diameter, Vector *initVelocity){
+Particle::Particle(float diameter, float initPosX, float initPosY, Vector *initVelocity){
 	std::cout << "Created Particle with diameter " << diameter << std::endl;
 	diameter = diameter;
 	initialVelocity = initVelocity;
+	initialPosX = initPosX;
+	initialPosY = initPosY;
 }
 
 Vector Particle::getinitialVelocity(){

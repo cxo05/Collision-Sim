@@ -10,7 +10,7 @@ class Particle
 
 	public:
 		Particle();
-		Particle(float diameter, Vector *initVelocity);
+		Particle(float diameter, float initPosX, float initPosY, Vector *initVelocity);
 		Vector getinitialVelocity();
 		Vector getfinalVelocity();
 		float getinitialPositionX();

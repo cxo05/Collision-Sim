@@ -7,11 +7,13 @@ class vhs
 	std::vector <Particle*> particles;
 	Particle Target;
 	public:
-		vhs(); //Initialize with particles
+		vhs();
 		void addParticle(Particle *particle);
 		void addParticles(std::vector <Particle*> particles);
-		int run(); //Run vhs simulation
+		void setTarget(Particle particle);
+		int run();
 		void showfinalVelocities();
+		void showParticles();
 		~vhs();
 };
 
