@@ -26,51 +26,69 @@ void vhs::setTarget(Particle particle) {
 int vhs::run() {
 	cout << "Running VHS..." << endl;
 	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
-		//*it.getinitialVelocity(); TODO Use particle velocities
-		Vector u1 = Vector();
-		Vector u2 = Vector();
+		Vector u1 = (*it)->getinitialVelocity();
+		Vector u2 = Vector(0,0);
+		//TODO Change frame of reference
+
+		//Result
 		Vector v1 = Vector();
 		Vector v2 = Vector();
-		float angle = 0.0;
 
-		//TODO Calculate angle
+		float angletoTarget = 0.0;
+
+		//TODO Calculate angletoTarget
+		
+		//Vector perpendicular to u1
+		Vector perpendicular;
+		perpendicular.setXCoordinate(-(u1.getYCoordinate()));
+		perpendicular.setYCoordinate(u1.getXCoordinate());
+
+		float x;
+		float y;
+
+		//Find point of intersection between velocity vector of 1 and perpendicular line with a point that is 2's position > Z
+		
+		//Center of particle 1 at point of contact : Z - (sqrt(c^2-b^2))(v1/v1.norm())
+
 		// d = d_ref (C_r,ref / C_r)^v
 		// v = w - 1/2
-		//Slope of perpendicular line is negative reciprocal of v1
-		//Find point of intersection between velocity vector of 1 and perpendicular line with a point that is 2's position > Z
-		//Center of particle 1 at point of contact : Z - (sqrt(c^2-b^2))(v1/v1.norm())
 
 		v1.setXCoordinate(
 			u1.getXCoordinate() +
-			cos(angle) * (
-				cos(angle)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angle)*(u1.getYCoordinate() - u2.getYCoordinate())
+			cos(angletoTarget) * (
+				cos(angletoTarget)*(u2.getXCoordinate() - u1.getXCoordinate()) +
+				sin(angletoTarget)*(u1.getYCoordinate() - u2.getYCoordinate())
 				)
 		);
 
 		v1.setYCoordinate(
 			u1.getYCoordinate() +
-			sin(angle) * (
-				cos(angle)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angle)*(u2.getYCoordinate() - u1.getYCoordinate())
+			sin(angletoTarget) * (
+				cos(angletoTarget)*(u1.getXCoordinate() - u2.getXCoordinate()) +
+				sin(angletoTarget)*(u2.getYCoordinate() - u1.getYCoordinate())
 				)
 		);
 
 		v2.setXCoordinate(
 			u2.getXCoordinate() +
-			cos(angle) * (
-				cos(angle)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angle)*(u2.getYCoordinate() - u1.getYCoordinate())
+			cos(angletoTarget) * (
+				cos(angletoTarget)*(u1.getXCoordinate() - u2.getXCoordinate()) +
+				sin(angletoTarget)*(u2.getYCoordinate() - u1.getYCoordinate())
 				)
 		);
 
 		v2.setYCoordinate(
 			u2.getYCoordinate() +
-			sin(angle) * (
-				cos(angle)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angle)*(u1.getYCoordinate() - u2.getYCoordinate())
+			sin(angletoTarget) * (
+				cos(angletoTarget)*(u2.getXCoordinate() - u1.getXCoordinate()) +
+				sin(angletoTarget)*(u1.getYCoordinate() - u2.getYCoordinate())
 				)
 		);
+
+		//Checking final velocity direction quadrants
+		//if ((v1.angleToOrigin / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
+		//	(*it)->setfinalVelocity(&(v1-=v2));
+		//}
 
 
 	}

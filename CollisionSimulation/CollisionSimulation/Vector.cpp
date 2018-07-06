@@ -34,6 +34,20 @@ float Vector::angleToOrigin() {
 	return(atan(y / x));
 }
 
+Vector& Vector::operator+=(const Vector& v) {
+	float angleToOrigin = cos(atan(v.y / v.x));
+	x += v.x * cos(angleToOrigin);
+	y += v.y * sin(angleToOrigin);
+	return *this;
+}
+
+Vector& Vector::operator-=(const Vector &v) {
+	float angleToOrigin = cos(atan(v.y / v.x));
+	x -= v.x * cos(angleToOrigin);
+	y -= v.y * sin(angleToOrigin);
+	return *this;
+}
+
 void Vector::addVector(const float x2, const float y2) {
 	float angleToOrigin = cos(atan(y2 / x2));
 	x += x2 * cos(angleToOrigin);

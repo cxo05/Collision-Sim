@@ -24,11 +24,13 @@ double Ipl::getW(double radius) {
 }
 double Ipl::getDeflectionAngle(double radius) {
 	//TODO Get parameters from Particle Class
-	return M_PI - 2 * mIntegration();
+	//TODO fix this
+	return M_PI - 2 * mIntegration(1);
 }
 double Ipl::getCrossSection(double radius) {
 	//TODO Get parameters from Particle Class
 	//fml
+	return 0;
 }
 
 
@@ -40,7 +42,7 @@ double Ipl::getFunction(double x, void *params) {
 
 
 
-double Ipl::mIntegration() {
+double Ipl::mIntegration(double W1) {
 	//TODO W1 = positive root of eqn
 	double a = 0., b = W1; // limits of integration
 	double abserr = 0., relerr = 1.e-7; // requested errors
@@ -53,8 +55,9 @@ double Ipl::mIntegration() {
 	
 	gsl_function F;
 	
-	 F.function = &getFunction;
-	 F.params = &W;
+	//TODO fix this
+	//F.function = &getFunction;
+	// F.params = &W;
 	
 	gsl_integration_qag(&F, a, b, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
 

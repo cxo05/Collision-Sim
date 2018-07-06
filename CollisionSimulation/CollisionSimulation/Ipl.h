@@ -6,7 +6,6 @@ private:
 	const double mViscousity = 1;
 	const double mIplConstant = 1;
 	double radius;
-	double getFunction(double x, void *params);
 public:
 	Ipl(double radius);
 	double getForce(double radius);

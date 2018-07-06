@@ -2,18 +2,13 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle() {
+Particle::Particle() : diameter(1), initialVelocity(new Vector) {
 	std::cout << "Created default Particle" << std::endl;
-	diameter = 1;
-	initialVelocity = new Vector;
 }
 
-Particle::Particle(float diameter, float initPosX, float initPosY, Vector *initVelocity){
-	std::cout << "Created Particle with diameter " << diameter << std::endl;
-	diameter = diameter;
-	initialVelocity = initVelocity;
-	initialPosX = initPosX;
-	initialPosY = initPosY;
+Particle::Particle(float diameter, float initPosX, float initPosY, Vector *initVelocity)
+	: diameter(diameter), initialVelocity(initVelocity), initialPosX(initPosX), initialPosY(initPosY){
+	std::cout << "Created Particle of size : " << diameter << " and position : " << initPosX << "," << initialPosY << std::endl;
 }
 
 Vector Particle::getinitialVelocity(){

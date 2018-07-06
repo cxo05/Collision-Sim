@@ -3,10 +3,11 @@
 
 class Particle
 {
-	float diameter;
-	float initialPosX, initialPosY;
-	Vector *initialVelocity;
-	Vector *finalVelocity;
+	private: 
+		float diameter;
+		float initialPosX, initialPosY;
+		Vector *initialVelocity;
+		Vector *finalVelocity;
 
 	public:
 		Particle();
