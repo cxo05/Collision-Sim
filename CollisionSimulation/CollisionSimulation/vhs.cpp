@@ -37,7 +37,7 @@ int vhs::run() {
 		float angletoTarget = 0.0;
 
 		//TODO Calculate angletoTarget
-		
+
 		//Vector perpendicular to u1
 		Vector perpendicular;
 		perpendicular.setXCoordinate(-(u1.getYCoordinate()));
@@ -86,11 +86,15 @@ int vhs::run() {
 		);
 
 		//Checking final velocity direction quadrants
-		//if ((v1.angleToOrigin / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
-		//	(*it)->setfinalVelocity(&(v1-=v2));
-		//}
+		/*if ((v1.angleToOrigin() / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
+			(*it)->setfinalVelocity(&(v1-=v2));
+		}*/
 
-
+		(*it)->setfinalVelocity(&v1);
+		(*it)->getfinalVelocity();
+		Target.setfinalVelocity(&v2);
+		Target.getfinalVelocity();
+		
 	}
 	cout << "VHS ended" << endl;
 	return 1;

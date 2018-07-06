@@ -21,7 +21,6 @@ float Vector::getYCoordinate() {
 	return y;
 }
 
-
 float Vector::getMagnitude() {
 	return sqrt((x*x) + (y*y));
 }
@@ -35,23 +34,15 @@ float Vector::angleToOrigin() {
 }
 
 Vector& Vector::operator+=(const Vector& v) {
-	float angleToOrigin = cos(atan(v.y / v.x));
-	x += v.x * cos(angleToOrigin);
-	y += v.y * sin(angleToOrigin);
+	x += v.x;
+	y += v.y;
 	return *this;
 }
 
 Vector& Vector::operator-=(const Vector &v) {
-	float angleToOrigin = cos(atan(v.y / v.x));
-	x -= v.x * cos(angleToOrigin);
-	y -= v.y * sin(angleToOrigin);
+	x -= v.x;
+	y -= v.y;
 	return *this;
-}
-
-void Vector::addVector(const float x2, const float y2) {
-	float angleToOrigin = cos(atan(y2 / x2));
-	x += x2 * cos(angleToOrigin);
-	y += y2 * sin(angleToOrigin);
 }
 
 std::string Vector::toString(){
@@ -60,7 +51,7 @@ std::string Vector::toString(){
 	ss2 << angleToOrigin();
 	std::string s1(ss1.str());
 	std::string s2(ss2.str());
-	return "Magnitude: " + s1 + " || Angle: " + s2;
+	return "Magnitude: " + s1 + " || Angle (radians): " + s2;
 }
 
 void Vector::setXCoordinate(const float newX) {
