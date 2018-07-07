@@ -7,6 +7,7 @@ class Vector
 private:
 	float x;
 	float y;
+	/*friend std::ostream& operator<<(std::ostream&, Vector&);*/
 
 public:
 	Vector();

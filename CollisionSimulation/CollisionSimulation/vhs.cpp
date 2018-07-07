@@ -1,114 +1,123 @@
 #include "stdafx.h"
 #include "vhs.h"
 #include <iostream>
-
-using namespace std;
+#include "Point.h"
 
 vhs::vhs(){
-	cout << "Created vhs sim" << endl;
+	std::cout << "Created vhs sim" << std::endl;
 }
 
 void vhs::addParticle(Particle *particle) {
-	cout << "Added a particle" << endl;
+	std::cout << "Added a particle" << std::endl;
 	particles.push_back(particle);
 }
 
-void vhs::addParticles(vector <Particle*> newParticles) {
-	cout << "Added particles" << endl;
+void vhs::addParticles(std::vector <Particle*> newParticles) {
+	std::cout << "Added particles" << std::endl;
 	particles.insert(particles.end(), newParticles.begin(), newParticles.end());
 }
 
 void vhs::setTarget(Particle particle) {
-	cout << "Added Target" << endl;
+	std::cout << "Added Target" << std::endl;
 	Target = particle;
 }
 
 int vhs::run() {
-	cout << "Running VHS..." << endl;
-	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
+	std::cout << "Running VHS..." << std::endl;
+	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
 		Vector u1 = (*it)->getinitialVelocity();
-		Vector u2 = Vector(0,0);
-		//TODO Change frame of reference
+		Vector u2 = Target.getinitialVelocity();
+
+		//TODO Change diameter
+		// d = d_ref (C_r,ref / C_r)^v
+		// v = w - 1/2
+		//(*it)->setDiameter(10.0f);
 
 		//Result
 		Vector v1 = Vector();
 		Vector v2 = Vector();
 
-		float angletoTarget = 0.0;
-
 		//TODO Calculate angletoTarget
+		float angletoTarget_atContact = 0.0f;
 
 		//Vector perpendicular to u1
 		Vector perpendicular;
 		perpendicular.setXCoordinate(-(u1.getYCoordinate()));
 		perpendicular.setYCoordinate(u1.getXCoordinate());
 
-		float x;
-		float y;
+		Point closestPoint = (*it)->getinitialPosition() += (Target.getinitialPosition() -= (*it)->getinitialPosition()) *= u1.getNorm();
+		float closestPointDistance = closestPoint.getDistanceTo(Target.getinitialPosition());
 
-		//Find point of intersection between velocity vector of 1 and perpendicular line with a point that is 2's position > Z
-		
-		//Center of particle 1 at point of contact : Z - (sqrt(c^2-b^2))(v1/v1.norm())
+		float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
+		if (closestPointDistance < combinedRadius) {
+			std::cout << "Particle set to collide with target" << std::endl;
 
-		// d = d_ref (C_r,ref / C_r)^v
-		// v = w - 1/2
+			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
-		v1.setXCoordinate(
-			u1.getXCoordinate() +
-			cos(angletoTarget) * (
-				cos(angletoTarget)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angletoTarget)*(u1.getYCoordinate() - u2.getYCoordinate())
-				)
-		);
+			//TODO Check this
+			angletoTarget_atContact = asin(closestPointDistance/combinedRadius);
 
-		v1.setYCoordinate(
-			u1.getYCoordinate() +
-			sin(angletoTarget) * (
-				cos(angletoTarget)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angletoTarget)*(u2.getYCoordinate() - u1.getYCoordinate())
-				)
-		);
+			v1.setXCoordinate(
+				u1.getXCoordinate() +
+				cos(angletoTarget_atContact) * (
+					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
+					sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
+					)
+			);
 
-		v2.setXCoordinate(
-			u2.getXCoordinate() +
-			cos(angletoTarget) * (
-				cos(angletoTarget)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angletoTarget)*(u2.getYCoordinate() - u1.getYCoordinate())
-				)
-		);
+			v1.setYCoordinate(
+				u1.getYCoordinate() +
+				sin(angletoTarget_atContact) * (
+					cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
+					sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
+					)
+			);
 
-		v2.setYCoordinate(
-			u2.getYCoordinate() +
-			sin(angletoTarget) * (
-				cos(angletoTarget)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angletoTarget)*(u1.getYCoordinate() - u2.getYCoordinate())
-				)
-		);
+			v2.setXCoordinate(
+				u2.getXCoordinate() +
+				cos(angletoTarget_atContact) * (
+					cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
+					sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
+					)
+			);
 
-		//Checking final velocity direction quadrants
-		/*if ((v1.angleToOrigin() / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
+			v2.setYCoordinate(
+				u2.getYCoordinate() +
+				sin(angletoTarget_atContact) * (
+					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
+					sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
+					)
+			);
+
+			//Change frame of reference
+			//Checking final velocity direction quadrants	
+			/*if ((v1.angleToOrigin() / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
 			(*it)->setfinalVelocity(&(v1-=v2));
-		}*/
+			}*/
 
-		(*it)->setfinalVelocity(&v1);
-		(*it)->getfinalVelocity();
-		Target.setfinalVelocity(&v2);
-		Target.getfinalVelocity();
-		
+			(*it)->setfinalVelocity(&v1);
+			std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;
+			Target.setfinalVelocity(&v2);
+			std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
+		}
+		else {
+			std::cout << "No collision with target" << std::endl;
+		}
+
 	}
-	cout << "VHS ended" << endl;
+	std::cout << "VHS ended" << std::endl;
 	return 1;
 }
 
 void vhs::showfinalVelocities() {
-	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
-		cout << ((*it)->getfinalVelocity()).toString() << endl;
+	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
+		std::cout << ((*it)->getfinalVelocity()).toString() << std::endl;
 	}
 }
 
 void vhs::showParticles() {
-	for (vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
-		cout << "(" << (*it)->getinitialPositionX() << " , " << (*it)->getinitialPositionY() << ") Velocity: " << ((*it)->getinitialVelocity()).toString() << endl;
+	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
+		std::cout << "Initial Position : " << (*it)->getinitialPosition() << " Velocity: " << ((*it)->getinitialVelocity()).toString() << std::endl;
 	}
 }
 

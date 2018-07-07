@@ -45,13 +45,18 @@ Vector& Vector::operator-=(const Vector &v) {
 	return *this;
 }
 
-std::string Vector::toString(){
+//std::ostream & operator<<(std::ostream &, Vector &v) {
+//	return std::cout << "Magnitude: " << v.getMagnitude() << " || Angle (radians): " << v.angleToOrigin() << ")";
+//}
+
+std::string Vector::toString() {
 	std::stringstream ss1, ss2;
 	ss1 << getMagnitude();
-	ss2 << angleToOrigin();
+	float a = angleToOrigin() * (180 / 3.14);
+	ss2 << a;
 	std::string s1(ss1.str());
 	std::string s2(ss2.str());
-	return "Magnitude: " + s1 + " || Angle (radians): " + s2;
+	return "Magnitude: " + s1 + " || Angle: " + s2;
 }
 
 void Vector::setXCoordinate(const float newX) {

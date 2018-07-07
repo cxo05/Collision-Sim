@@ -159,6 +159,7 @@
     <ClInclude Include="gsl_sys.h" />
     <ClInclude Include="gsl_types.h" />
     <ClInclude Include="Ipl.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="stdafx.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="CollisionSimulation.cpp" />
     <ClCompile Include="Ipl.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
