@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "gsl_integration.h"
+#include <gsl/gsl_integration.h>
 
 Ipl::Ipl(double radius) {
 }
@@ -28,7 +28,8 @@ double Ipl::getW(double radius) {
 double Ipl::getDeflectionAngle(double radius) {
 	//TODO Get parameters from Particle Class
 	//TODO fix this
-	return M_PI - 2 * mIntegration(1);
+	//return M_PI - 2 * mIntegration(1);
+	return 1;
 }
 double Ipl::getCrossSection(double radius) {
 	//TODO Get parameters from Particle Class
@@ -44,7 +45,7 @@ double Ipl::getFunction(double x, void *params) {
 
 
 
-double Ipl::mIntegration(double W1) {
+/*double Ipl::mIntegration(double W1) {
 	//TODO W1 = positive root of eqn
 	double a = 0., b = W1; // limits of integration
 	double abserr = 0., relerr = 1.e-7; // requested errors
@@ -71,3 +72,4 @@ double Ipl::mIntegration(double W1) {
 	
 	return result;
 }
+*/

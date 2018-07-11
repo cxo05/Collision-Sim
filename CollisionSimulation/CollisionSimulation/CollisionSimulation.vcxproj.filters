@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\gsl">
-      <UniqueIdentifier>{b5e44054-09b1-4959-9722-957aa837c2c4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -35,36 +32,6 @@
     </ClInclude>
     <ClInclude Include="Ipl.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_integration.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_math.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_sys.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_inline.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_machine.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_precision.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_types.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_nan.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_pow_int.h">
-      <Filter>Header Files\gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl_minmax.h">
-      <Filter>Header Files\gsl</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>

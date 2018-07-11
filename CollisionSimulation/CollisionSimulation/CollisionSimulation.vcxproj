@@ -104,11 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;GSL_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories> C:\gsl\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libgsl_dll_d.lib;libgslcblas_dll_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cblas.lib;gsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\gsl\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,16 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="gsl_inline.h" />
-    <ClInclude Include="gsl_integration.h" />
-    <ClInclude Include="gsl_machine.h" />
-    <ClInclude Include="gsl_math.h" />
-    <ClInclude Include="gsl_minmax.h" />
-    <ClInclude Include="gsl_nan.h" />
-    <ClInclude Include="gsl_pow_int.h" />
-    <ClInclude Include="gsl_precision.h" />
-    <ClInclude Include="gsl_sys.h" />
-    <ClInclude Include="gsl_types.h" />
     <ClInclude Include="Ipl.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
