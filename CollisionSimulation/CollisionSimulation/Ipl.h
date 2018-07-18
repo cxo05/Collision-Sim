@@ -5,15 +5,16 @@ class Ipl
 private:
 	const double mViscousity = 1;
 	const double mIplConstant = 1;
-	double radius;
+	double radius, b;
+	float angle;
 public:
-	Ipl(double radius);
-	double getForce(double radius);
-	double getPotential(double radius);
-	double getW0(double radius);
-	double getW(double radius);
-	double getDeflectionAngle(double radius);
-	double getCrossSection(double radius);
+	Ipl(double radius, float angle, double b);
+	double getForce();
+	double getPotential();
+	double getW0();
+	double getW();
+	double getDeflectionAngle();
+	double getCrossSection();
 	double getFunction(double x, void *params);
-	double mIntegration(double W1);
+	//double mIntegration(double W1);
 };

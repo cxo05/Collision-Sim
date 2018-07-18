@@ -6,32 +6,33 @@
 #include <iostream>
 #include <gsl/gsl_integration.h>
 
-Ipl::Ipl(double radius) {
-}
+Ipl::Ipl(double radius, float angle, double b) 
+	: radius(radius), angle(angle), b(b)
+{}
 
-double Ipl::getForce(double radius) {
+double Ipl::getForce() {
 	return mIplConstant / (pow(radius, mViscousity));
 }
-double Ipl::getPotential(double radius) {
+double Ipl::getPotential() {
 	return mIplConstant / ((mViscousity - 1) * pow(radius, mViscousity - 1));
 }
-double Ipl::getW0(double radius) {
+double Ipl::getW0() {
 	//TODO Get parameters from Particle Class
 	double b = 1, mass = 1, rVelocity = 1;
 	return b * pow((mass*pow(rVelocity, 2) / mIplConstant), 1 / (mViscousity - 1));
 }
-double Ipl::getW(double radius) {
+double Ipl::getW() {
 	//TODO Get parameters from Particle Class
 	double mass = 1, rVelocity = 1;
-	return pow(((getPotential(radius) / (0.5 * mass * pow(rVelocity, 2)))*(mViscousity - 1) / 2), (1 / (mViscousity - 1)))*getW0(radius);
+	return pow(((getPotential() / (0.5 * mass * pow(rVelocity, 2)))*(mViscousity - 1) / 2), (1 / (mViscousity - 1)))*getW0();
 }
-double Ipl::getDeflectionAngle(double radius) {
+double Ipl::getDeflectionAngle() {
 	//TODO Get parameters from Particle Class
 	//TODO fix this
 	//return M_PI - 2 * mIntegration(1);
 	return 1;
 }
-double Ipl::getCrossSection(double radius) {
+double Ipl::getCrossSection() {
 	//TODO Get parameters from Particle Class
 	//fml
 	return 0;
