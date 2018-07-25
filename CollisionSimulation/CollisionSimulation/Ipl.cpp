@@ -5,8 +5,6 @@
 #include <sstream>
 #include <iostream>
 #include <gsl/gsl_integration.h>
-#include <gsl/gsl_roots.h>
-#include <gsl/gsl_errno.h>
 
 #include "function.h"
 
