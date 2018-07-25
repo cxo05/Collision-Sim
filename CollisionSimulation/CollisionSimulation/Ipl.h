@@ -16,6 +16,5 @@ public:
 	double getDeflectionAngle();
 	double getCrossSection();
 	double getFunction(double x, void *params);
-	double getPositiveRootW();
 	//double mIntegration(double W1);
 };

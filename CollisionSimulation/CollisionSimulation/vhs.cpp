@@ -45,7 +45,8 @@ int vhs::run() {
 		perpendicular.setXCoordinate(-(u1.getYCoordinate()));
 		perpendicular.setYCoordinate(u1.getXCoordinate());
 
-		Point closestPoint = (*it)->getinitialPosition() += (Target.getinitialPosition() -= (*it)->getinitialPosition()) *= u1.getNorm();
+		Point closestPoint = (*it)->getinitialPosition() += ((Target.getinitialPosition() -= (*it)->getinitialPosition()) *= u1.getNorm());
+		std::cout << closestPoint << std::endl;
 		float closestPointDistance = closestPoint.getDistanceTo(Target.getinitialPosition());
 
 		float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
@@ -54,8 +55,8 @@ int vhs::run() {
 
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
-			//TODO Check this
 			angletoTarget_atContact = asin(closestPointDistance/combinedRadius);
+			std::cout << angletoTarget_atContact * (180 / 3.14159265358979323846) << std::endl;
 
 			v1.setXCoordinate(
 				u1.getXCoordinate() +
@@ -103,8 +104,8 @@ int vhs::run() {
 		else {
 			std::cout << "No collision with target" << std::endl;
 		}
-
 	}
+	particles.clear();
 	std::cout << "VHS ended" << std::endl;
 	return 1;
 }
