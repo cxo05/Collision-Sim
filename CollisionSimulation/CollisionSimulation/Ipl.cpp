@@ -8,6 +8,8 @@
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_errno.h>
 
+#include "function.h"
+
 Ipl::Ipl(double radius, float angle, double b) 
 	: radius(radius), angle(angle), b(b)
 {}
@@ -41,25 +43,33 @@ double Ipl::getCrossSection() {
 	return 0;
 }
 
-double Ipl::getFunction(double x, void *params) {
-	double W = *(double *)params, Wo = *(double *)params;
-
-	return pow(1 - pow(W, 2) - (2 / (mIplConstant - 1)) * pow((W / Wo), (mIplConstant - 1)), 0.5);
-}
-
 double Ipl::getPositiveRootW() {
-	/*const gsl_root_fsolver_type * T = gsl_root_fsolver_brent;
-	gsl_root_fsolver * s = gsl_root_fsolver_alloc(T);
-
-	gsl_function FDF;
-	FDF.function = &function_w;
-	FDF.params = 0;
-
-	int iter = 0, max_iter = 100, status;
+	//TODO Set up function to input 
+	int status;
+	int iter = 0, max_iter = 100;
+	const gsl_root_fsolver_type *T;
+	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
 	double x_lo = 0.0, x_hi = 5.0;
+	gsl_function F;
 
-	gsl_root_fsolver_set(s, &FDF, x_lo, x_hi);
+	//TODO Input correct params
+	struct function_params params = { 1.0, 0.0, -5.0 };
+
+	F.function = &function;
+	F.params = &params;
+
+	T = gsl_root_fsolver_brent;
+	s = gsl_root_fsolver_alloc(T);
+	gsl_root_fsolver_set(s, &F, x_lo, x_hi);
+
+	printf("using %s method\n",
+		gsl_root_fsolver_name(s));
+
+	printf("%5s [%9s, %9s] %9s %10s %9s\n",
+		"iter", "lower", "upper", "root",
+		"err", "err(est)");
+
 	do
 	{
 		iter++;
@@ -81,41 +91,5 @@ double Ipl::getPositiveRootW() {
 
 	gsl_root_fsolver_free(s);
 
-	return status;
-	*/
-	return 1;
+	return r;
 }
-
-double function_w(double x, void * params) {
-	double potential = 1, mass = 1, r_velocity = 1;
-	return 1 - x - potential / (0.5*mass*r_velocity);
-}
-
-/*double Ipl::mIntegration(double W1) {
-	//TODO W1 = positive root of eqn
-	double a = 0., b = W1; // limits of integration
-	double abserr = 0., relerr = 1.e-7; // requested errors
-	double result; // the integral value
-	double error; // the error estimate
-	double W = 1;
-
-	size_t np = 1000; // work area size
-	gsl_integration_workspace *w = gsl_integration_workspace_alloc(np);
-	
-	gsl_function F;
-	
-	//TODO fix this
-	//F.function = &getFunction;
-	// F.params = &W;
-	
-	gsl_integration_qag(&F, a, b, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
-
-	printf("result = % .18f\n", result);
-	printf("estimated error = % .18f\n", error);
-	printf("intervals = %zu\n", w->size);
-	
-	gsl_integration_workspace_free(w);
-	
-	return result;
-}
-*/

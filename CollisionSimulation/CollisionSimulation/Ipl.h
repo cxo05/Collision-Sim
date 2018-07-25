@@ -13,9 +13,7 @@ public:
 	double getPotential();
 	double getW0();
 	double getW();
-	double getDeflectionAngle();
-	double getCrossSection();
-	double getFunction(double x, void *params);
-	double getPositiveRootW();
-	//double mIntegration(double W1);
+	double getDeflectionAngle(); //TODO
+	double getCrossSection(); //TODO
+	double getPositiveRootW(); //TODO
 };
