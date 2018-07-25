@@ -6,16 +6,16 @@ class Particle
 {
 	private: 
 		float diameter;
-		Point *location;
+		Vector *location;
 		Vector *initialVelocity;
 		Vector *finalVelocity;
 
 	public:
 		Particle();
-		Particle(float diameter, Point *location, Vector *initVelocity);
+		Particle(float diameter, Vector *location, Vector *initVelocity);
 		Vector getinitialVelocity();
 		Vector getfinalVelocity();
-		Point getinitialPosition();
+		Vector getinitialPosition();
 		float getDiameter();
 		void setfinalVelocity(Vector *v);
 		void setDiameter(float d);

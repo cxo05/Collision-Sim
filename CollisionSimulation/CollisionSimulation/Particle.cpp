@@ -6,9 +6,10 @@ Particle::Particle() : diameter(1), initialVelocity(new Vector) {
 	std::cout << "Created default Particle" << std::endl;
 }
 
-Particle::Particle(float diameter, Point *location, Vector *initVelocity)
+Particle::Particle(float diameter, Vector *location, Vector *initVelocity)
 	: diameter(diameter), initialVelocity(initVelocity), location(location){
-	std::cout << "Created Particle of size : " << diameter << " and position : " << *location << std::endl;
+	std::cout << "Created Particle " << std::endl;
+	std::cout << "Size : " << diameter << " || Position : " << (*location).getXCoordinate() << "," << (*location).getYCoordinate() << " || Initial Velocity :" << initialVelocity->toString() << std::endl;
 }
 
 Vector Particle::getinitialVelocity(){
@@ -19,7 +20,7 @@ Vector Particle::getfinalVelocity(){
 	return *finalVelocity;
 }
 
-Point Particle::getinitialPosition() {
+Vector Particle::getinitialPosition() {
 	return *location;
 }
 

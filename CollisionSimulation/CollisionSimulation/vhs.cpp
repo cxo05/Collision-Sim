@@ -4,7 +4,6 @@
 #include "Point.h"
 
 vhs::vhs(){
-	std::cout << "Created vhs sim" << std::endl;
 }
 
 void vhs::addParticle(Particle *particle) {
@@ -23,7 +22,7 @@ void vhs::setTarget(Particle particle) {
 }
 
 int vhs::run() {
-	std::cout << "Running VHS..." << std::endl;
+	std::cout << "/////////////////VHS START/////////////////" << std::endl;
 	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
 		Vector u1 = (*it)->getinitialVelocity();
 		Vector u2 = Target.getinitialVelocity();
@@ -44,17 +43,19 @@ int vhs::run() {
 		
 		//TODO Change position to position vector;
 
-		//Vector asd = Vector((Target.getinitialPosition()).getX(), (Target.getinitialPosition()).getY());
+		Vector Targetpos = Target.getinitialPosition();
 		
-		/*float vectorProjection = asd.getMagnitude() * 
-			(asd.dotProduct(&(*it)->getinitialVelocity()))
-			/ (asd.getMagnitude() * ((*it)->getinitialVelocity()).getMagnitude());*/
+		float vectorProjection = Targetpos.getMagnitude() 
+			* (Targetpos.dotProduct(&(*it)->getinitialVelocity()))
+			/ (Targetpos.getMagnitude() * ((*it)->getinitialVelocity()).getMagnitude());
 
-		float vectorProjection = 0.0f;
+		if (trunc(1000. * vectorProjection) == trunc(1000. * Targetpos.getMagnitude())) {
+			std::cout << "Set to collide directly" << std::endl;
+			//TODO Do direct collision
+			return 1;
+		}
 
-		float DistanceToClosestPointFromTarget = 0.0f;
-
-		//float DistanceToClosestPointFromTarget = sqrt(asd.getMagnitude()*asd.getMagnitude() - vectorProjection*vectorProjection);
+		float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection*vectorProjection);
 		
 		float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
@@ -64,7 +65,6 @@ int vhs::run() {
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
 			angletoTarget_atContact = asin(DistanceToClosestPointFromTarget/combinedRadius);
-			std::cout << angletoTarget_atContact * (180 / 3.14) << std::endl;
 
 			v1.setXCoordinate(
 				u1.getXCoordinate() +
@@ -114,7 +114,7 @@ int vhs::run() {
 		}
 	}
 	particles.clear();
-	std::cout << "VHS ended" << std::endl;
+	std::cout << "/////////////////VHS END/////////////////" << std::endl;
 	return 1;
 }
 
@@ -126,7 +126,7 @@ void vhs::showfinalVelocities() {
 
 void vhs::showParticles() {
 	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
-		std::cout << "Initial Position : " << (*it)->getinitialPosition() << " Velocity: " << ((*it)->getinitialVelocity()).toString() << std::endl;
+		std::cout << "Initial Position : " << (*it)->getinitialPosition().getXCoordinate() << "," << (*it)->getinitialPosition().getYCoordinate() << " Velocity: " << ((*it)->getinitialVelocity()).toString() << std::endl;
 	}
 }
 

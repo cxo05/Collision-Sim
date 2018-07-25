@@ -45,10 +45,6 @@ Vector& Vector::operator-=(const Vector &v) {
 	return *this;
 }
 
-//std::ostream & operator<<(std::ostream &, Vector &v) {
-//	return std::cout << "Magnitude: " << v.getMagnitude() << " || Angle (radians): " << v.angleToOrigin() << ")";
-//}
-
 std::string Vector::toString() {
 	std::stringstream ss1, ss2;
 	ss1 << getMagnitude();
@@ -56,8 +52,7 @@ std::string Vector::toString() {
 	ss2 << a;
 	std::string s1(ss1.str());
 	std::string s2(ss2.str());
-	return "Magnitude: " + s1 + " || Angle: " + s2;
-	//return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + s1 + " || Angle: " + s2;
+	return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + s1 + " || Angle: " + s2;
 }
 
 void Vector::setXCoordinate(const float newX) {
@@ -69,9 +64,7 @@ void Vector::setYCoordinate(const float newY) {
 }
 
 float Vector::dotProduct(Vector *v) {
-	//return this->getXCoordinate() * v->getXCoordinate() + this->getYCoordinate() * v->getYCoordinate();
-
-	return 0.0f;
+	return this->getXCoordinate() * v->getXCoordinate() + this->getYCoordinate() * v->getYCoordinate();
 }
 
 Vector::~Vector() {
