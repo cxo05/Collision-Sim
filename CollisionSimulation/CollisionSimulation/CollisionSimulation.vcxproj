@@ -135,7 +135,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="function.h" />
     <ClInclude Include="Ipl.h" />
+    <ClInclude Include="IplTester.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
@@ -145,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionSimulation.cpp" />
+    <ClCompile Include="function.cpp" />
     <ClCompile Include="Ipl.cpp" />
+    <ClCompile Include="IplTester.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="stdafx.cpp">
