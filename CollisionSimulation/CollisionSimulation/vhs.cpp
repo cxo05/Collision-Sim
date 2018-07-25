@@ -39,24 +39,32 @@ int vhs::run() {
 
 		//TODO Calculate angletoTarget
 		float angletoTarget_atContact = 0.0f;
+		
+		//Via Vector Projection of target position vector on u1 
+		
+		//TODO Change position to position vector;
 
-		//Vector perpendicular to u1
-		Vector perpendicular;
-		perpendicular.setXCoordinate(-(u1.getYCoordinate()));
-		perpendicular.setYCoordinate(u1.getXCoordinate());
+		//Vector asd = Vector((Target.getinitialPosition()).getX(), (Target.getinitialPosition()).getY());
+		
+		/*float vectorProjection = asd.getMagnitude() * 
+			(asd.dotProduct(&(*it)->getinitialVelocity()))
+			/ (asd.getMagnitude() * ((*it)->getinitialVelocity()).getMagnitude());*/
 
-		Point closestPoint = (*it)->getinitialPosition() += ((Target.getinitialPosition() -= (*it)->getinitialPosition()) *= u1.getNorm());
-		std::cout << closestPoint << std::endl;
-		float closestPointDistance = closestPoint.getDistanceTo(Target.getinitialPosition());
+		float vectorProjection = 0.0f;
 
+		float DistanceToClosestPointFromTarget = 0.0f;
+
+		//float DistanceToClosestPointFromTarget = sqrt(asd.getMagnitude()*asd.getMagnitude() - vectorProjection*vectorProjection);
+		
 		float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
-		if (closestPointDistance < combinedRadius) {
+
+		if (DistanceToClosestPointFromTarget < combinedRadius) {
 			std::cout << "Particle set to collide with target" << std::endl;
 
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
-			angletoTarget_atContact = asin(closestPointDistance/combinedRadius);
-			std::cout << angletoTarget_atContact * (180 / 3.14159265358979323846) << std::endl;
+			angletoTarget_atContact = asin(DistanceToClosestPointFromTarget/combinedRadius);
+			std::cout << angletoTarget_atContact * (180 / 3.14) << std::endl;
 
 			v1.setXCoordinate(
 				u1.getXCoordinate() +

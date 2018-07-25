@@ -56,7 +56,8 @@ std::string Vector::toString() {
 	ss2 << a;
 	std::string s1(ss1.str());
 	std::string s2(ss2.str());
-	return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + s1 + " || Angle: " + s2;
+	return "Magnitude: " + s1 + " || Angle: " + s2;
+	//return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + s1 + " || Angle: " + s2;
 }
 
 void Vector::setXCoordinate(const float newX) {
@@ -65,6 +66,12 @@ void Vector::setXCoordinate(const float newX) {
 
 void Vector::setYCoordinate(const float newY) {
 	y = newY;
+}
+
+float Vector::dotProduct(Vector *v) {
+	//return this->getXCoordinate() * v->getXCoordinate() + this->getYCoordinate() * v->getYCoordinate();
+
+	return 0.0f;
 }
 
 Vector::~Vector() {

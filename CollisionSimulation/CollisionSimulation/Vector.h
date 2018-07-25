@@ -19,6 +19,7 @@ public:
 	float angleToOrigin();
 	void setXCoordinate(const float newX);
 	void setYCoordinate(const float newY);
+	float dotProduct(Vector *v);
 	Vector& operator+=(const Vector& v);
 	Vector& operator-=(const Vector& v);
 	std::string toString();
