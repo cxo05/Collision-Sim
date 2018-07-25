@@ -5,3 +5,4 @@ struct function_params
 };
 
 double function(double x, void *params);
+double iplFunction(double x, void *params);
