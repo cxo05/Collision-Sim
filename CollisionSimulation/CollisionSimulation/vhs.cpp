@@ -51,7 +51,16 @@ int vhs::run() {
 
 		if (trunc(1000. * vectorProjection) == trunc(1000. * Targetpos.getMagnitude())) {
 			std::cout << "Set to collide directly" << std::endl;
-			//TODO Do direct collision
+			//TODO Do fix direct collision
+			v1.setXCoordinate(-(u1.getXCoordinate() + u2.getXCoordinate()) / 2);
+			v1.setYCoordinate(-(u1.getYCoordinate() + u2.getYCoordinate()) / 2);
+			v2.setXCoordinate((u1.getXCoordinate() + u2.getXCoordinate()) / 2);
+			v2.setYCoordinate((u1.getYCoordinate() + u2.getYCoordinate()) / 2);
+			(*it)->setfinalVelocity(&v1);
+			std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;
+			Target.setfinalVelocity(&v2);
+			std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
+			//std::cout << "Testing cos : " << asin()
 			return 1;
 		}
 
@@ -65,6 +74,11 @@ int vhs::run() {
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 
 			angletoTarget_atContact = asin(DistanceToClosestPointFromTarget/combinedRadius);
+			std::cout << "Angle to target at contact : " << angletoTarget_atContact*180/3.14 << std::endl;
+			std::cout << "Closest distance : " << DistanceToClosestPointFromTarget << std::endl;
+
+			//TOOD angletoTarget_atContact
+
 
 			v1.setXCoordinate(
 				u1.getXCoordinate() +
