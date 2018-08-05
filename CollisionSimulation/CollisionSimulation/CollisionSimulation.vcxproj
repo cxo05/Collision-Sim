@@ -136,8 +136,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CollisionDynamics.h" />
-    <ClInclude Include="function.h" />
-    <ClInclude Include="Ipl.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
@@ -148,8 +146,6 @@
   <ItemGroup>
     <ClCompile Include="CollisionDynamics.cpp" />
     <ClCompile Include="CollisionSimulation.cpp" />
-    <ClCompile Include="function.cpp" />
-    <ClCompile Include="Ipl.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="stdafx.cpp">

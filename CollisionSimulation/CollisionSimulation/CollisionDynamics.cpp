@@ -8,15 +8,29 @@
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_errno.h>
 
-#include "function.h"
-
 CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	: radius(radius), angle(angle), b(b)
-{}
+{
+	getPositiveRootW();
+}
 
 double r(double x, void * params) {
 	(void)params;
 	return x;
+}
+
+struct function_params {
+	double b, m, c, k, n;
+};
+
+double rootFunction(double x, void *p) {
+	struct function_params * params
+		= (struct function_params *)p;
+
+	double result = 1.0 - x * x - (params->k*pow(x, params->n + 1) / (params->n - 1) / (.5*params->m*params->c*params->c));
+	//double result = 1.0 - x*x - (1*pow(x, 4) / (5 - 1) / (.5));
+
+	return result;
 }
 
 double CollisionDynamics::getPositiveRootW() {
@@ -35,9 +49,9 @@ double CollisionDynamics::getPositiveRootW() {
 	gsl_function F;
 
 	//TODO Input correct params
-	struct function_params params = { 1.0, 0.0, -5.0 };
+	struct function_params params = { 1.0, 1.0, 1.0, 1.0, 5.0 };
 
-	F.function = &function;
+	F.function = &rootFunction;
 	F.params = &params;
 
 	T = gsl_root_fsolver_brent;
