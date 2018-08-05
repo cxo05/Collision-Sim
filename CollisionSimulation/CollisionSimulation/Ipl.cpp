@@ -45,11 +45,11 @@ double Ipl::getPositiveRootW() {
 	const gsl_root_fsolver_type *T;
 	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
-	double x_lo = 0.0, x_hi = 5.0;
+	double x_lo = 1, x_hi = 5.0;
 	gsl_function F;
 
 	//TODO Input correct params
-	struct function_params params = { 1.0, 0.0, -5.0 };
+	struct function_params params = { 1.0, 1.0, 1.0, 1.0, 5.0};
 
 	F.function = &function;
 	F.params = &params;

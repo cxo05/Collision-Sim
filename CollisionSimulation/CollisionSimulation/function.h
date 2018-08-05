@@ -2,7 +2,7 @@
 
 struct function_params
 {
-	double a, b, c;
+	double b, m, c, k, n;
 };
 
 double function(double x, void *params);
