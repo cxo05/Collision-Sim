@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Ipl.h"
+#include "CollisionDynamics.h"
 #include <math.h>
 #include <string>
 #include <sstream>
@@ -10,35 +10,21 @@
 
 #include "function.h"
 
-Ipl::Ipl(double radius, float angle, double b) 
+CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	: radius(radius), angle(angle), b(b)
 {}
 
-double Ipl::getForce() {
-	return mIplConstant / (pow(radius, mViscousity));
-}
-double Ipl::getPotential() {
-	return mIplConstant / ((mViscousity - 1) * pow(radius, mViscousity - 1));
-}
-double Ipl::getW0() {
-	//TODO Get parameters from Particle Class
-	double b = 1, mass = 1, rVelocity = 1;
-	return b * pow((mass*pow(rVelocity, 2) / mIplConstant), 1 / (mViscousity - 1));
-}
-double Ipl::getW() {
-	//TODO Get parameters from Particle Class
-	return 0;
-}
-double Ipl::getDeflectionAngle() {
-	//TODO Get parameters from Particle Class
-	return 0;
-}
-double Ipl::getCrossSection() {
-	//TODO Get parameters from Particle Class
-	return 0;
+double r(double x, void * params) {
+	(void)params;
+	return x;
 }
 
-double Ipl::getPositiveRootW() {
+double CollisionDynamics::getPositiveRootW() {
+	//TODO
+	double mForce = 1;
+
+	double mPhi = 1;
+
 	//TODO Set up function to input 
 	int status;
 	int iter = 0, max_iter = 100;

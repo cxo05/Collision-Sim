@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -135,9 +135,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionDynamics.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="Ipl.h" />
-    <ClInclude Include="IplTester.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
@@ -146,10 +146,10 @@
     <ClInclude Include="vhs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionDynamics.cpp" />
     <ClCompile Include="CollisionSimulation.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="Ipl.cpp" />
-    <ClCompile Include="IplTester.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="stdafx.cpp">
