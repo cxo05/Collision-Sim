@@ -11,4 +11,5 @@ public:
 	CollisionDynamics(double radius, float angle, double b);
 
 	double getPositiveRootW(); 
+	void getApseLine(double mRoot);
 };
