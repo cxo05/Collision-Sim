@@ -14,11 +14,6 @@ CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	: radius(radius), angle(angle), b(b)
 {}
 
-double r(double x, void * params) {
-	(void)params;
-	return x;
-}
-
 double CollisionDynamics::getPositiveRootW() {
 	//TODO
 	double mForce = 1;
@@ -35,7 +30,7 @@ double CollisionDynamics::getPositiveRootW() {
 	gsl_function F;
 
 	//TODO Input correct params
-	struct function_params params = { 1.0, 0.0, -5.0 };
+	struct function_params params = { 1.0, 1.0, 1.0, 5.0 };
 
 	F.function = &function;
 	F.params = &params;
@@ -44,6 +39,7 @@ double CollisionDynamics::getPositiveRootW() {
 	s = gsl_root_fsolver_alloc(T);
 	gsl_root_fsolver_set(s, &F, x_lo, x_hi);
 
+	std::cout << "\n\n\n//////////////STARTING ROOT SEARCH///////////////" << std::endl;
 	printf("using %s method\n",
 		gsl_root_fsolver_name(s));
 
@@ -71,6 +67,7 @@ double CollisionDynamics::getPositiveRootW() {
 	} while (status == GSL_CONTINUE && iter < max_iter);
 
 	gsl_root_fsolver_free(s);
+	std::cout << "\n\n\n//////////////ROOT SEARCH END///////////////" << std::endl;
 
 	return r;
 }

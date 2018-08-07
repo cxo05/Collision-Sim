@@ -49,7 +49,7 @@ double Ipl::getPositiveRootW() {
 	gsl_function F;
 
 	//TODO Input correct params
-	struct function_params params = { 1.0, 1.0, 1.0, 1.0, 5.0};
+	struct function_params params = { 1.0, 1.0, 1.0, 5.0};
 
 	F.function = &function;
 	F.params = &params;
