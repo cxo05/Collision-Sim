@@ -16,15 +16,14 @@ CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 
 
 struct function_params {
-	double b, m, c, k, n;
+	double m, c, k, n;
 };
 
 double rootFunction(double x, void *p) {
 	struct function_params * params
 		= (struct function_params *)p;
 
-	double result = 1.0 - x * x - (params->k*pow(x, params->n + 1) / (params->n - 1) / (.5*params->m*params->c*params->c));
-	//double result = 1.0 - x*x - (1*pow(x, 4) / (5 - 1) / (.5));	
+	double result = 1.0 - x * x - (params->k*pow(x, params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
 
 	return result;
 }
@@ -44,7 +43,7 @@ void CollisionDynamics::getApseLine(double mRoot) {
 
 	gsl_function F2;
 
-	struct function_params params = { 1.0, 2.0, 2.0, 1.0, 5.0 };
+	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
 
 	F2.function = &rootFunction;
 	F2.params = &params;
@@ -70,11 +69,11 @@ double CollisionDynamics::getPositiveRootW() {
 	const gsl_root_fsolver_type *T;
 	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
-	double x_lo = 0.01, x_hi = 100.0;
+	double x_lo = 0.1, x_hi = 1.0;
 	gsl_function F;
 
 
-	struct function_params params = { 1.0, 2.0, 2.0, 1.0, 5.0 };
+	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
 
 	F.function = &rootFunction;
 	F.params = &params;
