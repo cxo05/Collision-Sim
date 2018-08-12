@@ -68,7 +68,6 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	double abserr = 0., relerr = 1.e-7; // requested errors
 	double result; // the integral value
 	double error; // the error estimate
-	//double x = 5;
 
 	size_t np = 1000; // work area size
 	gsl_integration_workspace *w = gsl_integration_workspace_alloc(np);
@@ -83,6 +82,9 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	F2.function = &rootFunction;
 	F2.params = &params;
 
+	/*
+	Integration method is (should be) Gaussian quadrature 
+	*/
 	gsl_integration_qag(&F2, a, b, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
 
 	printf("result = % .18f\n", result);
@@ -120,6 +122,12 @@ double CollisionDynamics::getPositiveRootW() {
 	F.function = &rootFunction;
 	F.params = &params;
 
+	/*
+	Root finding is applied using brent's method (since it does not need the derivative of the equation like Newton's Raphson method)
+	https://en.wikipedia.org/wiki/Brent%27s_method
+	The "error" (should) be the numerical tolerance	to determine which method is used to find the root
+	I might be wrong though
+	*/
 	T = gsl_root_fsolver_brent;
 	s = gsl_root_fsolver_alloc(T);
 	gsl_root_fsolver_set(s, &F, x_lo, x_hi);
