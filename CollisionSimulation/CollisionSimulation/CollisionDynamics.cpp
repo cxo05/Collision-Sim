@@ -11,7 +11,7 @@
 CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	: radius(radius), angle(angle), b(b)
 {
-		getApseLine(getPositiveRootW());
+		getDeflectionAngle(getApseLine(getPositiveRootW()));
 }
 
 
@@ -28,8 +28,14 @@ double rootFunction(double x, void *p) {
 	return result;
 }
 
-void CollisionDynamics::getApseLine(double mRoot) {
-	std::cout << "//////////////STARTING INTEGRATION FOR APSE LINE///////////////" << std::endl;
+void CollisionDynamics::getDeflectionAngle(double mApseAngle) {
+	std::cout << "//////////////GETTING DEFLECTION ANGLE///////////////" << std::endl;
+	std::cout << "////////////// DEFLECTION ANGLE: " << M_PI - 2 * mApseAngle <<	" ///////////////" << std::endl;
+	std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
+}
+
+double CollisionDynamics::getApseLine(double mRoot) {
+	std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
 	std::cout << "USING ROOT : " << mRoot << std::endl;
 
 	double a = 0., b = mRoot; // limits of integration
@@ -57,7 +63,9 @@ void CollisionDynamics::getApseLine(double mRoot) {
 	gsl_integration_workspace_free(w);
 
 	std::cout << "Apse Line is = " << result;
-	std::cout << "\n\n\n//////////////ENDING INTEGRATION FOR APSE LINE///////////////\n\n\n" << std::endl;
+	std::cout << "\n\n\n//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
+
+	return result;
 }
 
 double CollisionDynamics::getPositiveRootW() {
