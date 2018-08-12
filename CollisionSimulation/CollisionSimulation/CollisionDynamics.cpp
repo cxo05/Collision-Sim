@@ -8,32 +8,58 @@
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_errno.h>
 
+/**
+	Collysion Dynamics Class
+	This class outputs the deflection angle of a particle coming towards (from our point of view) a stationary particle
+
+	TODO: Change input params of class itself (from radius, angle, b to function_params)
+	The class takes in the function_params parameters and
+	1) Uses root solver to find positive root W (dimensionless coordinate) (Eqn 2.20)
+	2) Inputs positive root W to an integral to find the angle of the apse line (Eqn 2.19)
+	3) Finally finds the deflection angle (Eqn 2.21)
+
+**/
 CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	: radius(radius), angle(angle), b(b)
 {
-		getDeflectionAngle(getApseLine(getPositiveRootW()));
+	getDeflectionAngle(getApseLine(getPositiveRootW()));
 }
 
-
+/**
+	Function paramters for root finding and integration
+	m = mass
+	c = velocity
+	k = kappa	(constant in IPL) 
+	n = miu     (coefficient of viscosity) 
+**/
 struct function_params {
 	double m, c, k, n;
 };
 
+
+/**
+	Function to find the positive root W (result is the actual equation)
+**/
 double rootFunction(double x, void *p) {
 	struct function_params * params
 		= (struct function_params *)p;
 
 	double result = 1.0 - x * x - (params->k*pow(x, params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
-
 	return result;
 }
 
+/**
+	Getting deflection angle
+**/
 void CollisionDynamics::getDeflectionAngle(double mApseAngle) {
 	std::cout << "//////////////GETTING DEFLECTION ANGLE///////////////" << std::endl;
 	std::cout << "////////////// DEFLECTION ANGLE: " << M_PI - 2 * mApseAngle <<	" ///////////////" << std::endl;
 	std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
 }
 
+/**
+	Getting Apse line angle
+**/
 double CollisionDynamics::getApseLine(double mRoot) {
 	std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
 	std::cout << "USING ROOT : " << mRoot << std::endl;
@@ -49,6 +75,9 @@ double CollisionDynamics::getApseLine(double mRoot) {
 
 	gsl_function F2;
 
+	/*
+	Function params set here (params same as root finding params)
+	*/
 	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
 
 	F2.function = &rootFunction;
@@ -68,6 +97,9 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	return result;
 }
 
+/**
+	Getting positive root W
+**/
 double CollisionDynamics::getPositiveRootW() {
 
 	double mRoot;
@@ -80,7 +112,9 @@ double CollisionDynamics::getPositiveRootW() {
 	double x_lo = 0.1, x_hi = 1.0;
 	gsl_function F;
 
-
+	/*
+		Function params set here (params same as integration params)
+	*/
 	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
 
 	F.function = &rootFunction;
