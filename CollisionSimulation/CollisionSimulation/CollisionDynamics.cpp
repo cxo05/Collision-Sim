@@ -19,8 +19,8 @@
 	3) Finally finds the deflection angle (Eqn 2.21)
 
 **/
-CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
-	: radius(radius), angle(angle), b(b)
+CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, double n)
+	: b(b), m(m), c(c), k(k), n(n)
 {
 	getDeflectionAngle(getApseLine(getPositiveRootW()));
 }
@@ -33,7 +33,7 @@ CollisionDynamics::CollisionDynamics(double radius, float angle, double b)
 	n = miu     (coefficient of viscosity) 
 **/
 struct function_params {
-	double m, c, k, n;
+	double b, m, c, k, n;
 };
 
 
@@ -44,7 +44,7 @@ double rootFunction(double x, void *p) {
 	struct function_params * params
 		= (struct function_params *)p;
 
-	double result = 1.0 - x * x - (params->k*pow(x, params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
+	double result = 1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
 	return result;
 }
 
@@ -64,7 +64,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
 	std::cout << "USING ROOT : " << mRoot << std::endl;
 
-	double a = 0., b = mRoot; // limits of integration
+	double lowerLim = 0., upperLim = mRoot; // limits of integration
 	double abserr = 0., relerr = 1.e-7; // requested errors
 	double result; // the integral value
 	double error; // the error estimate
@@ -74,10 +74,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 
 	gsl_function F2;
 
-	/*
-	Function params set here (params same as root finding params)
-	*/
-	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
+	struct function_params params = { b, m, c, k, n };
 
 	F2.function = &rootFunction;
 	F2.params = &params;
@@ -85,7 +82,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	/*
 	Integration method is (should be) Gaussian quadrature 
 	*/
-	gsl_integration_qag(&F2, a, b, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
+	gsl_integration_qag(&F2, lowerLim, upperLim, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
 
 	printf("result = % .18f\n", result);
 	printf("estimated error = % .18f\n", error);
@@ -114,10 +111,7 @@ double CollisionDynamics::getPositiveRootW() {
 	double x_lo = 0.1, x_hi = 1.0;
 	gsl_function F;
 
-	/*
-		Function params set here (params same as integration params)
-	*/
-	struct function_params params = { 8.0, 8.0, 2.0, 5.0 };
+	struct function_params params = { b, m, c, k, n };
 
 	F.function = &rootFunction;
 	F.params = &params;
