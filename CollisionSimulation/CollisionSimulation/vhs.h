@@ -11,7 +11,8 @@ class vhs
 		void addParticle(Particle *particle);
 		void addParticles(std::vector <Particle*> particles);
 		void setTarget(Particle particle);
-		int run();
+		void run();
+		bool collisionCheck(Particle * p, Particle t);
 		void showfinalVelocities();
 		void showParticles();
 		~vhs();

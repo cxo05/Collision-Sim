@@ -5,8 +5,8 @@
 class Particle
 {
 	private: 
-		float diameter;
-		Vector *location;
+		float diameter; //Meter
+		Vector *location; 
 		Vector *initialVelocity;
 		Vector *finalVelocity;
 

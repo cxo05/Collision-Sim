@@ -21,27 +21,19 @@ void vhs::setTarget(Particle particle) {
 	Target = particle;
 }
 
-int vhs::run() {
-	std::cout << "/////////////////VHS START/////////////////" << std::endl;
+void vhs::run() {
+	std::cout << "/////////////////VHS START/////////////////" << std::endl << std::endl;
 	for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
 		Vector u1 = (*it)->getinitialVelocity();
 		Vector u2 = Target.getinitialVelocity();
+
+		Vector v1 = Vector();
+		Vector v2 = Vector();
 
 		//TODO Change diameter
 		// d = d_ref (C_r,ref / C_r)^v
 		// v = w - 1/2
 		//(*it)->setDiameter(10.0f);
-
-		//Result
-		Vector v1 = Vector();
-		Vector v2 = Vector();
-
-		//TODO Calculate angletoTarget
-		float angletoTarget_atContact = 0.0f;
-		
-		//Via Vector Projection of target position vector on u1 
-		
-		//TODO Change position to position vector;
 
 		Vector Targetpos = Target.getinitialPosition();
 		
@@ -49,69 +41,44 @@ int vhs::run() {
 			* (Targetpos.dotProduct(&(*it)->getinitialVelocity()))
 			/ (Targetpos.getMagnitude() * ((*it)->getinitialVelocity()).getMagnitude());
 
-		if (trunc(1000. * vectorProjection) == trunc(1000. * Targetpos.getMagnitude())) {
-			std::cout << "Set to collide directly" << std::endl;
-			//TODO Do fix direct collision
-			v1.setXCoordinate(-(u1.getXCoordinate() + u2.getXCoordinate()) / 2);
-			v1.setYCoordinate(-(u1.getYCoordinate() + u2.getYCoordinate()) / 2);
-			v2.setXCoordinate((u1.getXCoordinate() + u2.getXCoordinate()) / 2);
-			v2.setYCoordinate((u1.getYCoordinate() + u2.getYCoordinate()) / 2);
-			(*it)->setfinalVelocity(&v1);
-			std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;
-			Target.setfinalVelocity(&v2);
-			std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
-			//std::cout << "Testing cos : " << asin()
-			return 1;
-		}
+		//Direct collision
+		//if (trunc(1000. * vectorProjection) == trunc(1000. * Targetpos.getMagnitude())) {
+		//	std::cout << "Set to collide directly" << std::endl;
+		//	//TODO Do fix direct collision
+		//	v1.setXCoordinate(-(u1.getXCoordinate() + u2.getXCoordinate()) / 2);
+		//	v1.setYCoordinate(-(u1.getYCoordinate() + u2.getYCoordinate()) / 2);
+		//	v2.setXCoordinate((u1.getXCoordinate() + u2.getXCoordinate()) / 2);
+		//	v2.setYCoordinate((u1.getYCoordinate() + u2.getYCoordinate()) / 2);
+		//	(*it)->setfinalVelocity(&v1);
+		//	std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;
+		//	Target.setfinalVelocity(&v2);
+		//	std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
+		//	return;
+		//}
 
-		float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection*vectorProjection);
-		
-		float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
-
-		if (DistanceToClosestPointFromTarget < combinedRadius) {
-			std::cout << "Particle set to collide with target" << std::endl;
-
+		if (collisionCheck(*it, Target)) {
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
+			std::cout << "Distance between centers in m : " << combinedRadius << std::endl;
 
-			angletoTarget_atContact = asin(DistanceToClosestPointFromTarget/combinedRadius);
-			std::cout << "Angle to target at contact : " << angletoTarget_atContact*180/3.14 << std::endl;
-			std::cout << "Closest distance : " << DistanceToClosestPointFromTarget << std::endl;
+			float vr = ((u1.getXCoordinate() - u2.getXCoordinate()) * ((*it)->getinitialPosition().getXCoordinate() - Target.getinitialPosition().getXCoordinate()))
+				+ ((u1.getYCoordinate() - u2.getYCoordinate()) * ((*it)->getinitialPosition().getYCoordinate() - Target.getinitialPosition().getYCoordinate()));
+			std::cout << "vr : " << vr << std::endl;
 
-			//TOOD angletoTarget_atContact
+			float impulse = (2 * vr) / combinedRadius / 1; //TODO Check Units
+			std::cout << "Impulse : " << impulse << std::endl;
 
+			float Jx = (impulse * ((*it)->getinitialPosition().getXCoordinate() - Target.getinitialPosition().getXCoordinate())) / combinedRadius;
+			float Jy = (impulse * ((*it)->getinitialPosition().getYCoordinate() - Target.getinitialPosition().getYCoordinate())) / combinedRadius;
+			std::cout << "Impulse X : " << Jx <<std::endl;
+			std::cout << "Impulse Y : " << Jy <<std::endl;
 
-			v1.setXCoordinate(
-				u1.getXCoordinate() +
-				cos(angletoTarget_atContact) * (
-					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-					sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
-					)
-			);
+			v1.setXCoordinate(u1.getXCoordinate() - Jx);
+			v1.setYCoordinate(u1.getYCoordinate() - Jy);
 
-			v1.setYCoordinate(
-				u1.getYCoordinate() +
-				sin(angletoTarget_atContact) * (
-					cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-					sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
-					)
-			);
+			v2.setXCoordinate(u2.getXCoordinate() + Jx);
+			v2.setYCoordinate(u2.getYCoordinate() + Jy);
 
-			v2.setXCoordinate(
-				u2.getXCoordinate() +
-				cos(angletoTarget_atContact) * (
-					cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-					sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
-					)
-			);
-
-			v2.setYCoordinate(
-				u2.getYCoordinate() +
-				sin(angletoTarget_atContact) * (
-					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-					sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
-					)
-			);
-
+			/*
 			//Change frame of reference
 			//Checking final velocity direction quadrants	
 			/*if ((v1.angleToOrigin() / 90) % 4 + 1 == (v2.angleToOrigin / 90) % 4 + 1) {
@@ -123,13 +90,30 @@ int vhs::run() {
 			Target.setfinalVelocity(&v2);
 			std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
 		}
-		else {
-			std::cout << "No collision with target" << std::endl;
-		}
 	}
 	particles.clear();
-	std::cout << "/////////////////VHS END/////////////////" << std::endl;
-	return 1;
+	std::cout << std::endl << "/////////////////VHS END/////////////////" << std::endl;
+	return;
+}
+
+bool vhs::collisionCheck(Particle * p, Particle t) {
+	Vector Targetpos = t.getinitialPosition();
+
+	float vectorProjection = Targetpos.getMagnitude()
+		* (Targetpos.dotProduct(&(p->getinitialVelocity())))
+		/ (Targetpos.getMagnitude() * (p->getinitialVelocity()).getMagnitude());
+
+	float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection * vectorProjection);
+
+	float combinedRadius = p->getDiameter() / 2 + t.getDiameter() / 2;
+
+	if (DistanceToClosestPointFromTarget < combinedRadius) {
+		std::cout << "Collision : TRUE" << std::endl;
+		return true;
+	} else {
+		std::cout << "Collision : FALSE" << std::endl;
+		return false;
+	}
 }
 
 void vhs::showfinalVelocities() {
