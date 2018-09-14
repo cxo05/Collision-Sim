@@ -7,6 +7,7 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_errno.h>
+#include "Gas.h"
 
 /**
 	Collysion Dynamics Class
@@ -19,10 +20,26 @@
 	3) Finally finds the deflection angle (Eqn 2.21)
 
 **/
-CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, double n)
-	: b(b), m(m), c(c), k(k), n(n)
+CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, double n, Gas g)
+	: b(b), m(m), c(c), k(k), n(n), g(g)
 {
 	getDeflectionAngle(getApseLine(getPositiveRootW()));
+}
+
+CollisionDynamics::CollisionDynamics(double b, double c, Gas g)
+	: b(b), c(c), g(g)
+{
+	extractVariables(g);
+	getDeflectionAngle(getApseLine(getPositiveRootW()));
+}
+
+/**
+	Function to extract values from real gases (ie Kappa value)
+**/
+void CollisionDynamics::extractVariables(Gas g) {
+	m = g.getMol_mass();
+	n = g.getNu();
+	k = g.getKappa();
 }
 
 /**
@@ -108,7 +125,7 @@ double CollisionDynamics::getPositiveRootW() {
 	const gsl_root_fsolver_type *T;
 	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
-	double x_lo = 0.1, x_hi = 1.0;
+	double x_lo = 0.1, x_hi = 2.0;
 	gsl_function F;
 
 	struct function_params params = { b, m, c, k, n };

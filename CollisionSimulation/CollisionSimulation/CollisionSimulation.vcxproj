@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CollisionDynamics.h" />
+    <ClInclude Include="Gas.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="CollisionDynamics.cpp" />
     <ClCompile Include="CollisionSimulation.cpp" />
+    <ClCompile Include="Gas.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="stdafx.cpp">
