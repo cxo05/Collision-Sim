@@ -8,6 +8,7 @@ class vhs
 	Particle Target;
 	public:
 		vhs();
+		void addParams(float b, float d, float v);
 		void addParticle(Particle *particle);
 		void addParticles(std::vector <Particle*> particles);
 		void setTarget(Particle particle);
