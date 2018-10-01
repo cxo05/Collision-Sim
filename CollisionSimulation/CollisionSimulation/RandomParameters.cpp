@@ -7,39 +7,37 @@
 RandomParameters::RandomParameters() {
 }
 
-float RandomParameters::get_DRef() {
-	//Currently just set to 1.0f
-	return 1.0f;
+double RandomParameters::get_DRef() {
+	//Currently just set to 1.0
+	return 1.0;
 }
 
-float RandomParameters::get_CrRef() {
-	//Boltzmann_constant
-	float k = 1.380658 * pow(10, -23); //JK^-1
-	float coefficient_of_viscosity = 0.845 * pow(10, -5); //Hydrogen : 0.845 * 10^-5
-	float mass = 3.34 * pow(10, -27); //Hydrogen : 3.34 * 10^-27 kg
-	float viscosity_index = 0.67; //Hydrogen : 0.67
-	float v = viscosity_index - 0.5;
-	//Temperature in kelvins
-	float T = 298.0;
+double RandomParameters::get_CrRef() {
 	//Total collision cross section
-	float sigmaT = 3.1415 * 1.2 * pow(10, -10) * 1.2 * pow(10, -10); //Diameter of hydrogen : 1.2 * 10^-10
-	float inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) / 
+	double sigmaT = 3.1415 * 1.2 * pow(10, -10) * 1.2 * pow(10, -10); //Diameter of hydrogen : 1.2 * 10^-10 TODO Check
+	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
 					(viscosity_index * sigmaT * tgamma(4-v));
-	float Cr_ref = pow(sqrt(inner), 1/v);
+	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
 }
 
-float RandomParameters::get_Cr() {
+double RandomParameters::get_Cr() {
 	//From normal distribution of velocity of air molecules
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
-	float mean = 0;
-	float standard_deviation = sqrt(8.314 * 298);
-	std::normal_distribution<float> distribution(mean, standard_deviation);
+	int mean = 0;
+	double standard_deviation = sqrt(8.314 * 298);
+	std::normal_distribution<double> distribution(mean, standard_deviation);
 	return distribution(generator);
 }
 
-float RandomParameters::get_B() {
+double RandomParameters::get_B() {
+	double alpha = 1; //1 for now
+	double meanFreePath = (4*alpha*(5-2*viscosity_index)*(7-2*viscosity_index))/
+							(5 * (alpha + 1) * (alpha + 2)) * 
+							sqrt(mass / (2 * 3.1415 * k * T)) *
+							(coefficient_of_viscosity / density);
+	std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	return 0.0f;
 }
 
