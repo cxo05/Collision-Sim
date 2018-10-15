@@ -6,7 +6,7 @@ public:
 	RandomParameters();
 	double get_DRef();
 	double get_CrRef();
-	double get_Cr();
+	double* get_3D_Cr();
 	double get_B();
 	~RandomParameters();
 
