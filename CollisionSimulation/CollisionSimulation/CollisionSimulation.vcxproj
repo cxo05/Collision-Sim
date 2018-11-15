@@ -138,6 +138,7 @@
     <ClInclude Include="CollisionDynamics.h" />
     <ClInclude Include="Gas.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="RandomParameters.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="stdafx.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Gas.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="RandomParameters.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

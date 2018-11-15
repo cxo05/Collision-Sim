@@ -48,11 +48,9 @@ Vector& Vector::operator-=(const Vector &v) {
 std::string Vector::toString() {
 	std::stringstream ss1, ss2;
 	ss1 << getMagnitude();
-	float a = angleToOrigin() * (180 / 3.14);
+	float a = angleToOrigin() * (180 / 3.14159265358979323846);
 	ss2 << a;
-	std::string s1(ss1.str());
-	std::string s2(ss2.str());
-	return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + s1 + " || Angle: " + s2;
+	return "(" + std::to_string(x) + "," + std::to_string(y) + ") " + "Magnitude: " + ss1.str() + " || Angle: " + ss2.str();
 }
 
 void Vector::setXCoordinate(const float newX) {
