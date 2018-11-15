@@ -37,8 +37,7 @@ void vhs::run() {
 		Vector v1 = Vector();
 		Vector v2 = Vector();
 
-		// d = d_ref (C_r,ref / C_r)^v
-		// v = w - 1/2
+		
 		//(*it)->setDiameter((*it)->getDiameter() * pow((u1/C_r), v));
 
 		Vector Targetpos = Target.getinitialPosition();
@@ -47,58 +46,23 @@ void vhs::run() {
 			* (Targetpos.dotProduct(&(*it)->getinitialVelocity()))
 			/ (Targetpos.getMagnitude() * ((*it)->getinitialVelocity()).getMagnitude());
 
-		//Direct collision
-		//if (trunc(1000. * vectorProjection) == trunc(1000. * Targetpos.getMagnitude())) {
-		//	std::cout << "Set to collide directly" << std::endl;
-		//	//TODO Do fix direct collision
-		//	v1.setXCoordinate(-(u1.getXCoordinate() + u2.getXCoordinate()) / 2);
-		//	v1.setYCoordinate(-(u1.getYCoordinate() + u2.getYCoordinate()) / 2);
-		//	v2.setXCoordinate((u1.getXCoordinate() + u2.getXCoordinate()) / 2);
-		//	v2.setYCoordinate((u1.getYCoordinate() + u2.getYCoordinate()) / 2);
-		//	(*it)->setfinalVelocity(&v1);
-		//	std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;
-		//	Target.setfinalVelocity(&v2);
-		//	std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
-		//	return;
-		//}
-
 		if (collisionCheck(*it, Target)) {
-			//float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
-
-			//float vr = ((u1.getXCoordinate() - u2.getXCoordinate()) * ((*it)->getinitialPosition().getXCoordinate() - Target.getinitialPosition().getXCoordinate()))
-			//	+ ((u1.getYCoordinate() - u2.getYCoordinate()) * ((*it)->getinitialPosition().getYCoordinate() - Target.getinitialPosition().getYCoordinate()));
-			//std::cout << "vr : " << vr << std::endl;
-
-			//float impulse = (2 * 1 * 1 * vr) / (combinedRadius * (1 + 1)); //TODO Check Units
-			//std::cout << "Impulse : " << impulse << std::endl;
-
-			//float Jx = (impulse * ((*it)->getinitialPosition().getXCoordinate() - Target.getinitialPosition().getXCoordinate())) / combinedRadius;
-			//float Jy = (impulse * ((*it)->getinitialPosition().getYCoordinate() - Target.getinitialPosition().getYCoordinate())) / combinedRadius;
-			//std::cout << "Impulse X : " << Jx <<std::endl;
-			//std::cout << "Impulse Y : " << Jy <<std::endl;
-
-			//v1.setXCoordinate(u1.getXCoordinate() - Jx);
-			//v1.setYCoordinate(u1.getYCoordinate() - Jy);
-
-			//v2.setXCoordinate(u2.getXCoordinate() + Jx);
-			//v2.setYCoordinate(u2.getYCoordinate() + Jy);
-
-			//float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection * vectorProjection);
-			float DistanceToClosestPointFromTarget = (*it)->getinitialPosition().getXCoordinate();
-			std::cout << "Distance to closest point from target : " << DistanceToClosestPointFromTarget << std::endl;
-
 			float combinedRadius = (*it)->getDiameter() / 2 + Target.getDiameter() / 2;
 			std::cout << "Combined Radius : " << combinedRadius << std::endl;
+
+			//float DistanceToClosestPointFromTarget = (*it)->getinitialPosition().getXCoordinate();
+			float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection * vectorProjection);
+			std::cout << "Distance to closest point from target : " << DistanceToClosestPointFromTarget << std::endl;
 
 			float angletoTarget_atContact = acos(DistanceToClosestPointFromTarget / combinedRadius);
 			std::cout << "angletoTarget_atContact : " << angletoTarget_atContact * 180 / 3.14159265 << std::endl;
 
-			std::cout << "Angle of deflection of particle : " << atan(sin(angletoTarget_atContact) / (1 + cos(angletoTarget_atContact))) * 180 / 3.1415 << std::endl;
+			/*std::cout << "Angle of deflection of particle : " << atan(sin(angletoTarget_atContact) / (1 + cos(angletoTarget_atContact))) * 180 / 3.1415 << std::endl;
 			std::cout << "Magnitude : " << u1.getMagnitude() * sqrt(2 + 2 * cos(angletoTarget_atContact)) / 2 << std::endl;
-			std::cout << "Angle of deflection of target : " << (3.1415 - angletoTarget_atContact) / 2 * 180 / 3.1415 << std::endl;
-			std::cout << "Magnitude : " << u1.getMagnitude() * sin(angletoTarget_atContact/2) << std::endl;
+			std::cout << "Angle of deflection of target : " << (3.1415 - angletoTarget_atContact) / 2 * 180 /a 3.1415 << std::endl;
+			std::cout << "Magnitude : " << u1.getMagnitude() * sin(angletoTarget_atContact/2) << std::endl;*/
 
-			/*v1.setXCoordinate( 
+			v1.setXCoordinate( 
 				u1.getXCoordinate() +
 				cos(angletoTarget_atContact) * (
 					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
@@ -128,9 +92,8 @@ void vhs::run() {
 					cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
 					sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
 					)
-			);*/
+			);
 			
-			//TODO Change frame of reference
 
 			(*it)->setfinalVelocity(&v1);
 			std::cout << "Particle final velocity : " << ((*it)->getfinalVelocity()).toString() << std::endl;

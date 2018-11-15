@@ -14,9 +14,9 @@ double RandomParameters::get_DRef() {
 
 double RandomParameters::get_CrRef() {
 	//Total collision cross section
-	double sigmaT = 3.1415 * 2.92 * pow(10, -10) * 2.92 * pow(10, -10); //Diameter of hydrogen : 1.2 * 10^-10 TODO Get from book
+	double sigmaT = 3.1415 * radius * radius;
 	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
-					(viscosity_index * sigmaT * tgamma(4-v));
+					(viscosity_index_hydrogen * sigmaT * tgamma(4-v));
 	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
 }
@@ -36,7 +36,7 @@ double* RandomParameters::get_3D_Cr() {
 
 double RandomParameters::get_B() {
 	double alpha = 1; //1 for now
-	double meanFreePath = (4*alpha*(5-2*viscosity_index)*(7-2*viscosity_index))/
+	double meanFreePath = (4*alpha*(5-2* viscosity_index_hydrogen)*(7-2* viscosity_index_hydrogen))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
 							(coefficient_of_viscosity / density);
