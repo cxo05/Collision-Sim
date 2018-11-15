@@ -63,13 +63,14 @@ double rootFunction(double x, void *p) {
 
 	double result = 1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
 	return result;
-}
+}	
 
 /**
 	Getting deflection angle
 **/
 void CollisionDynamics::getDeflectionAngle(double mApseAngle) {
 	std::cout << "//////////////GETTING DEFLECTION ANGLE///////////////" << std::endl;
+	std::cout << "////////////// FOR A PARTICLES WITH B : " << b << ", M : " << m << ", C : " << c << ", K : " << k << ", N : " << n << " ///////////////" << std::endl;
 	std::cout << "////////////// DEFLECTION ANGLE: " << M_PI - 2 * mApseAngle <<	" ///////////////" << std::endl;
 	std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
 }
@@ -108,7 +109,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	gsl_integration_workspace_free(w);
 
 	std::cout << "Apse Line is = " << result;
-	std::cout << "\n\n\n//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
+	std::cout << "//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
 
 	return result;
 }
@@ -143,7 +144,7 @@ double CollisionDynamics::getPositiveRootW() {
 	s = gsl_root_fsolver_alloc(T);
 	gsl_root_fsolver_set(s, &F, x_lo, x_hi);
 
-	std::cout << "\n\n\n//////////////STARTING ROOT SEARCH///////////////" << std::endl;
+	std::cout << "//////////////STARTING ROOT SEARCH///////////////" << std::endl;
 	printf("using %s method\n",
 		gsl_root_fsolver_name(s));
 
@@ -173,7 +174,7 @@ double CollisionDynamics::getPositiveRootW() {
 	} while (status == GSL_CONTINUE && iter < max_iter);
 
 	gsl_root_fsolver_free(s);
-	std::cout << "\n\n\n//////////////ROOT SEARCH END///////////////" << std::endl;
+	std::cout << "//////////////ROOT SEARCH END///////////////" << std::endl;
 
 	return mRoot;
 }

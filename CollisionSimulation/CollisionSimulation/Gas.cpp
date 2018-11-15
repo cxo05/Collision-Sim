@@ -48,5 +48,5 @@ double Gas::getKappa()
 
 double Gas::getNumericalFactor()
 {
-	return 0.319;
+	return 0.333;
 }
