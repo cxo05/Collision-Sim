@@ -16,7 +16,7 @@ double RandomParameters::get_CrRef() {
 	//Total collision cross section
 	double sigmaT = 3.1415 * radius * radius;
 	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
-					(viscosity_index_hydrogen * sigmaT * tgamma(4-v));
+					(viscosity_index * sigmaT * tgamma(4-v));
 	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
 }
@@ -36,7 +36,7 @@ double* RandomParameters::get_3D_Cr() {
 
 double RandomParameters::get_B() {
 	double alpha = 1; //1 for now
-	double meanFreePath = (4*alpha*(5-2* viscosity_index_hydrogen)*(7-2* viscosity_index_hydrogen))/
+	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
 							(coefficient_of_viscosity / density);
@@ -53,6 +53,25 @@ double RandomParameters::get_B() {
 	return 0.0f;
 }
 
-
 RandomParameters::~RandomParameters() {
+}
+
+void RandomParameters::setCoefficientOfViscosity(double cov) {
+	coefficient_of_viscosity = cov;
+}
+
+void RandomParameters::setMass(double mass) {
+	this->mass = mass;
+}
+
+void RandomParameters::setViscosityIndex(double vi) {
+	viscosity_index = vi;
+}
+
+void RandomParameters::setDiameter(double diameter) {
+	this->diameter = diameter;
+}
+
+void RandomParameters::setTemperature(double T) {
+	this->T = T;
 }
