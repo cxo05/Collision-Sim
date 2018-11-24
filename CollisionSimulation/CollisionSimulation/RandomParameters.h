@@ -8,8 +8,9 @@ public:
 	RandomParameters();
 	double get_DRef();
 	double get_CrRef();
-	double* get_3D_Cr();
-	double get_B();
+	void get_3D_Cr(double* cr_vector);
+	void get_coordinates(double* coord);
+	double get_B(double* a_coord, double* b_coord, double* a_v, double* b_v);
 	~RandomParameters();
 
 	void setCoefficientOfViscosity(double cov);
@@ -21,8 +22,6 @@ public:
 private:
 	//Boltzmann_constant
 	double k = 1.380658 * pow(10, -23); 
-	
-	
 	
 	double mass = 3.34 * pow(10, -27); //Hydrogen : 3.34 * 10^-27 kg
 	

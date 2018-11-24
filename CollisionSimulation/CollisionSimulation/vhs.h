@@ -4,18 +4,16 @@
 
 class vhs
 {
-	std::vector <Particle*> particles;
+	Particle* particle;
 	Particle Target;
 	public:
 		vhs();
 		void addParams(float b, float d, float v);
-		void addParticle(Particle *particle);
-		void addParticles(std::vector <Particle*> particles);
+		void setParticle(Particle *particle);
 		void setTarget(Particle particle);
 		void run();
 		bool collisionCheck(Particle * p, Particle t);
 		void showfinalVelocities();
-		void showParticles();
 		~vhs();
 };
 

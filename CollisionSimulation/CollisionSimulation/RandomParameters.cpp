@@ -21,36 +21,47 @@ double RandomParameters::get_CrRef() {
 	return Cr_ref;
 }
 
-double* RandomParameters::get_3D_Cr() {
+ void RandomParameters::get_3D_Cr(double* cr_vector) {
 	//From normal distribution of velocity of air molecules generate random 3D vector Cr
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
 	double standard_deviation = sqrt(8.314 * 298);
 	std::normal_distribution<double> distribution(mean, standard_deviation);
-	
-	double cr_vector[3] = { distribution(generator) , distribution(generator) , distribution(generator) };
-	
-	return cr_vector;
+	cr_vector[0] = distribution(generator);
+	cr_vector[1] = distribution(generator);
+	cr_vector[2] = distribution(generator);
 }
 
-double RandomParameters::get_B() {
+void RandomParameters::get_coordinates(double* coord) {
 	double alpha = 1; //1 for now
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
 							(coefficient_of_viscosity / density);
-	std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
+
+	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	
 	//Choose 2 points within cube of width meanFreePath
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator(seed);
 	std::uniform_real_distribution<double> unif(0, meanFreePath);
-	std::default_random_engine re;
-	double a_coordinate[3] = { unif(re), unif(re), unif(re)};
-	double b_coordinate[3] = { unif(re), unif(re), unif(re)};
+	coord[0] = unif(generator);
+	coord[1] = unif(generator);
+	coord[2] = unif(generator);
+}
 
-	std::cout << "Random coordinates : " << a_coordinate[0] << "," << a_coordinate[1] << "," << a_coordinate[2] << std::endl;
+double RandomParameters::get_B(double* a_coord, double* b_coord, double* a_v, double* b_v) {
+	//Changing frame of reference to a
+	double newV[3] = { a_v[0] - b_v[0] , a_v[1] - b_v[1] , a_v[2] - b_v[2] };
+	std::cout << "newV : " << newV[0] << " " << newV[1] << " " <<  newV[2] << std::endl;
+	//Distance between the two points
+	double distance = sqrt((a_coord[0] - b_coord[0]) * (a_coord[0] - b_coord[0]) +
+							(a_coord[1] - b_coord[1]) * (a_coord[1] - b_coord[1]) +
+							(a_coord[2] - b_coord[2]) * (a_coord[2] - b_coord[2]));
+	
 
-	return 0.0f;
+	return 0.0;
 }
 
 RandomParameters::~RandomParameters() {
