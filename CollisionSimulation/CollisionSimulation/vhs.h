@@ -4,17 +4,13 @@
 
 class vhs
 {
-	Particle* particle;
-	Particle Target;
-	double cr_ref;
+	double b;
+	double d;
+
 	public:
-		vhs();
-		void addParams(float b, float d, float v, double cr_ref);
-		void setParticle(Particle *particle);
-		void setTarget(Particle particle);
-		void run();
-		bool collisionCheck(Particle * p, Particle t);
-		void showfinalVelocities();
+		vhs(double b, double d, double* v1);
+		void run(double u1, double u2);
+		bool collisionCheck(double b, double d);
 		~vhs();
 };
 

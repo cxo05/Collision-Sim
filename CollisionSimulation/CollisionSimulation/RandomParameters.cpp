@@ -59,19 +59,12 @@ void RandomParameters::get_coordinates(double* coord) {
 	coord[2] = unif(generator);
 }
 
-double RandomParameters::get_B(double* a_coord, double* b_coord, double* a_v, double* b_v) {
-	//Changing frame of reference to a
-	double newV[3] = { a_v[0] - b_v[0] , a_v[1] - b_v[1] , a_v[2] - b_v[2] };
-	std::cout << "newV : " << newV[0] << " " << newV[1] << " " <<  newV[2] << std::endl;
-	//Distance between the two points
-	double distance = sqrt((a_coord[0] - b_coord[0]) * (a_coord[0] - b_coord[0]) +
-							(a_coord[1] - b_coord[1]) * (a_coord[1] - b_coord[1]) +
-							(a_coord[2] - b_coord[2]) * (a_coord[2] - b_coord[2]));
+double RandomParameters::get_B(double* a_coord, double* b_coord, double* newV) {
 	double b;
-	double* tem = cross_product(newV[0] - a_coord[0], newV[1] - a_coord[1], newV[2] - a_coord[2],
-		a_coord[0]-b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
-	double numerator = sqrt(pow(tem[0], 2) + pow(tem[1], 2) + pow(tem[2], 2));
-	double denominator = sqrt(pow(newV[0] - a_coord[0], 2) + pow(newV[1] - a_coord[1], 2) + pow(newV[2] - a_coord[2], 2));
+	double* tem = cross_product(newV[0], newV[1], newV[2],
+		a_coord[0] - b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
+	double numerator = sqrt(tem[0] * tem[0] + tem[1] * tem[1] + tem[2] * tem[2]);
+	double denominator = sqrt(newV[0] * newV[0] + newV[1] * newV[1] + newV[2] * newV[2]);
 	b = numerator / denominator;
 	return b;
 }

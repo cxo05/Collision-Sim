@@ -3,59 +3,33 @@
 #include <iostream>
 #include "Point.h"
 
-vhs::vhs(){
-	//Target params (diameter, location, velocity)
-	Particle target(0.1f, new Vector(0,1), new Vector(0,0));
-	setTarget(target);
+vhs::vhs(double b, double d, double* v){
+	std::cout << "VHS START--->" << std::endl;
+	this->b = b;
+	this->d = d;
+	run(v[0], v[1]); // x and y
+	//run(v[0], v[2]);
+	std::cout << "VHS END..." << std::endl;
 }
 
-void vhs::addParams(float b, float d, float v, double cr_ref) {
-	setParticle(new Particle(d, new Vector(b,0), new Vector(0,v)));
-	this->cr_ref = cr_ref;
-}
-
-void vhs::setParticle(Particle *particle) {
-	std::cout << "Set a particle" << std::endl;
-	this->particle = particle;
-}
-
-void vhs::setTarget(Particle particle) {
-	std::cout << "Added Target" << std::endl;
-	Target = particle;
-}
-
-void vhs::run() {
-	std::cout << "/////////////////VHS START/////////////////" << std::endl << std::endl;
-	Vector u1 = particle->getinitialVelocity();
-	Vector u2 = Target.getinitialVelocity();
+void vhs::run(double u1x, double u1y) {
+	Vector u1 = Vector(u1x, u1y);
+	Vector u2 = Vector(0,0);
 
 	Vector v1 = Vector();
 	Vector v2 = Vector();
 
-
-	//particle->setDiameter(particle->getDiameter() * pow((cr_ref/u1), v));
-
-	Vector Targetpos = Target.getinitialPosition();
-
-	float vectorProjection = Targetpos.getMagnitude()
+	/*float vectorProjection = Targetpos.getMagnitude()
 		* (Targetpos.dotProduct(&particle->getinitialVelocity()))
-		/ (Targetpos.getMagnitude() * (particle->getinitialVelocity()).getMagnitude());
+		/ (Targetpos.getMagnitude() * (particle->getinitialVelocity()).getMagnitude());*/
 
-	if (collisionCheck(particle, Target)) {
-		float combinedRadius = particle->getDiameter() / 2 + Target.getDiameter() / 2;
-		std::cout << "Combined Radius : " << combinedRadius << std::endl;
+	if (collisionCheck(this->b , this->d)) {
+		std::cout << "Combined Radius : " << this->d << std::endl;
 
-		//float DistanceToClosestPointFromTarget = (*it)->getinitialPosition().getXCoordinate();
-		float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection * vectorProjection);
-		std::cout << "Distance to closest point from target : " << DistanceToClosestPointFromTarget << std::endl;
+		std::cout << "Distance to closest point from target : " << this->b << std::endl;
 
-		float angletoTarget_atContact = acos(DistanceToClosestPointFromTarget / combinedRadius);
+		float angletoTarget_atContact = acos(this->b / this->d);
 		std::cout << "angletoTarget_atContact : " << angletoTarget_atContact * 180 / 3.14159265 << std::endl;
-
-		/*std::cout << "Angle of deflection of particle : " << atan(sin(angletoTarget_atContact) / (1 + cos(angletoTarget_atContact))) * 180 / 3.1415 << std::endl;
-		std::cout << "Magnitude : " << u1.getMagnitude() * sqrt(2 + 2 * cos(angletoTarget_atContact)) / 2 << std::endl;
-		std::cout << "Angle of deflection of target : " << (3.1415 - angletoTarget_atContact) / 2 * 180 /a 3.1415 << std::endl;
-		std::cout << "Magnitude : " << u1.getMagnitude() * sin(angletoTarget_atContact/2) << std::endl;*/
 
 		v1.setXCoordinate(
 			u1.getXCoordinate() +
@@ -89,18 +63,24 @@ void vhs::run() {
 				)
 		);
 
-
-		particle->setfinalVelocity(&v1);
-		std::cout << "Particle final velocity : " << (particle->getfinalVelocity()).toString() << std::endl;
-		Target.setfinalVelocity(&v2);
-		std::cout << "Target final velocity : " << (Target.getfinalVelocity()).toString() << std::endl;
+		std::cout << "Particle final velocity : " << v1.toString() << std::endl;
+		std::cout << "Target final velocity : " << v2.toString() << std::endl;
 	}
-	particle = NULL;
-	std::cout << std::endl << "/////////////////VHS END/////////////////" << std::endl;
 	return;
 }
 
-bool vhs::collisionCheck(Particle * p, Particle t) {
+bool vhs::collisionCheck(double b, double d) {
+	if (b < d) {
+		std::cout << "Collision : TRUE" << std::endl;
+		return true;
+	}
+	else {
+		std::cout << "Collision : FALSE" << std::endl;
+		return false;
+	}
+}
+
+/*bool vhs::collisionCheck(Particle * p, Particle t) {
 	Vector Targetpos = t.getinitialPosition();
 	//TODO More cases
 	if (t.getinitialVelocity().getMagnitude() == 0) {
@@ -125,13 +105,7 @@ bool vhs::collisionCheck(Particle * p, Particle t) {
 		std::cout << "Collision : FALSE" << std::endl;
 		return false;
 	}
-}
-
-void vhs::showfinalVelocities() {
-	/*for (std::vector<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it) {
-		std::cout << ((*it)->getfinalVelocity()).toString() << std::endl;
-	}*/
-}
+}*/
 
 vhs::~vhs(){
 }

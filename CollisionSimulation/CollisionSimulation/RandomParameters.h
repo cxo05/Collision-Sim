@@ -10,7 +10,7 @@ public:
 	double get_CrRef();
 	void get_3D_Cr(double* cr_vector);
 	void get_coordinates(double* coord);
-	double get_B(double* a_coord, double* b_coord, double* a_v, double* b_v);
+	double get_B(double* a_coord, double* b_coord, double* newV);
 	~RandomParameters();
 
 	void setCoefficientOfViscosity(double cov);
