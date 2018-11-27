@@ -9,8 +9,9 @@ vhs::vhs(){
 	setTarget(target);
 }
 
-void vhs::addParams(float b, float d, float v) {
+void vhs::addParams(float b, float d, float v, double cr_ref) {
 	setParticle(new Particle(d, new Vector(b,0), new Vector(0,v)));
+	this->cr_ref = cr_ref;
 }
 
 void vhs::setParticle(Particle *particle) {
@@ -32,7 +33,7 @@ void vhs::run() {
 	Vector v2 = Vector();
 
 
-	//(*it)->setDiameter((*it)->getDiameter() * pow((u1/C_r), v));
+	//particle->setDiameter(particle->getDiameter() * pow((cr_ref/u1), v));
 
 	Vector Targetpos = Target.getinitialPosition();
 

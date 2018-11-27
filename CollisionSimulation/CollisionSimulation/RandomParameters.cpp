@@ -7,6 +7,14 @@
 RandomParameters::RandomParameters() {
 }
 
+double* cross_product(double u1, double u2, double u3, double v1, double v2, double v3) {
+	double uv[3];
+	uv[0] = u2 * v3 - v2 * u3;
+	uv[1] = v1 * u3 - u1 * v3;
+	uv[2] = u1 * v2 - v1 * u2;
+	return uv;
+}
+
 double RandomParameters::get_DRef() {
 	//Currently just set to 1.0
 	return 1.0;
@@ -59,9 +67,13 @@ double RandomParameters::get_B(double* a_coord, double* b_coord, double* a_v, do
 	double distance = sqrt((a_coord[0] - b_coord[0]) * (a_coord[0] - b_coord[0]) +
 							(a_coord[1] - b_coord[1]) * (a_coord[1] - b_coord[1]) +
 							(a_coord[2] - b_coord[2]) * (a_coord[2] - b_coord[2]));
-	
-
-	return 0.0;
+	double b;
+	double* tem = cross_product(newV[0] - a_coord[0], newV[1] - a_coord[1], newV[2] - a_coord[2],
+		a_coord[0]-b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
+	double numerator = sqrt(pow(tem[0], 2) + pow(tem[1], 2) + pow(tem[2], 2));
+	double denominator = sqrt(pow(newV[0] - a_coord[0], 2) + pow(newV[1] - a_coord[1], 2) + pow(newV[2] - a_coord[2], 2));
+	b = numerator / denominator;
+	return b;
 }
 
 RandomParameters::~RandomParameters() {
