@@ -7,6 +7,14 @@
 RandomParameters::RandomParameters() {
 }
 
+double* cross_product(double u1, double u2, double u3, double v1, double v2, double v3) {
+	double uv[3];
+	uv[0] = u2 * v3 - v2 * u3;
+	uv[1] = v1 * u3 - u1 * v3;
+	uv[2] = u1 * v2 - v1 * u2;
+	return uv;
+}
+
 double RandomParameters::get_DRef() {
 	//Currently just set to 1.0
 	return 1.0;
@@ -16,43 +24,70 @@ double RandomParameters::get_CrRef() {
 	//Total collision cross section
 	double sigmaT = 3.1415 * radius * radius;
 	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
-					(viscosity_index_hydrogen * sigmaT * tgamma(4-v));
+					(viscosity_index * sigmaT * tgamma(4-v));
 	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
 }
 
-double* RandomParameters::get_3D_Cr() {
+ void RandomParameters::get_3D_Cr(double* cr_vector) {
 	//From normal distribution of velocity of air molecules generate random 3D vector Cr
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
 	double standard_deviation = sqrt(8.314 * 298);
 	std::normal_distribution<double> distribution(mean, standard_deviation);
-	
-	double cr_vector[3] = { distribution(generator) , distribution(generator) , distribution(generator) };
-	
-	return cr_vector;
+	cr_vector[0] = distribution(generator);
+	cr_vector[1] = distribution(generator);
+	cr_vector[2] = distribution(generator);
 }
 
-double RandomParameters::get_B() {
+void RandomParameters::get_coordinates(double* coord) {
 	double alpha = 1; //1 for now
-	double meanFreePath = (4*alpha*(5-2* viscosity_index_hydrogen)*(7-2* viscosity_index_hydrogen))/
+	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
 							(coefficient_of_viscosity / density);
-	std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
+
+	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	
 	//Choose 2 points within cube of width meanFreePath
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator(seed);
 	std::uniform_real_distribution<double> unif(0, meanFreePath);
-	std::default_random_engine re;
-	double a_coordinate[3] = { unif(re), unif(re), unif(re)};
-	double b_coordinate[3] = { unif(re), unif(re), unif(re)};
-
-	std::cout << "Random coordinates : " << a_coordinate[0] << "," << a_coordinate[1] << "," << a_coordinate[2] << std::endl;
-
-	return 0.0f;
+	coord[0] = unif(generator);
+	coord[1] = unif(generator);
+	coord[2] = unif(generator);
 }
 
+double RandomParameters::get_B(double* a_coord, double* b_coord, double* newV) {
+	double b;
+	double* tem = cross_product(newV[0], newV[1], newV[2],
+		a_coord[0] - b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
+	double numerator = sqrt(tem[0] * tem[0] + tem[1] * tem[1] + tem[2] * tem[2]);
+	double denominator = sqrt(newV[0] * newV[0] + newV[1] * newV[1] + newV[2] * newV[2]);
+	b = numerator / denominator;
+	return b;
+}
 
 RandomParameters::~RandomParameters() {
+}
+
+void RandomParameters::setCoefficientOfViscosity(double cov) {
+	coefficient_of_viscosity = cov;
+}
+
+void RandomParameters::setMass(double mass) {
+	this->mass = mass;
+}
+
+void RandomParameters::setViscosityIndex(double vi) {
+	viscosity_index = vi;
+}
+
+void RandomParameters::setDiameter(double diameter) {
+	this->diameter = diameter;
+}
+
+void RandomParameters::setTemperature(double T) {
+	this->T = T;
 }
