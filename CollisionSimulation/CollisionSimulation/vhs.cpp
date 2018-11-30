@@ -7,10 +7,10 @@ VHS::VHS(){
 	
 }
 
-Eigen::Vector3d* VHS::run(double b, double d, double* aCoord, double* bCoord, double* ua, double* ub) {
+std::vector<Eigen::Vector3d> VHS::run(double b, double d, double* aCoord, double* bCoord, double* ua, double* ub) {
 	std::cout << "VHS START--->" << std::endl;
 
-	Eigen::Vector3d finalVelocities[2];
+	std::vector<Eigen::Vector3d> finalVelocities;
 
 	std::cout << "Diameter : " << d << std::endl;
 	std::cout << "Miss Distance : " << b << std::endl;
@@ -30,8 +30,8 @@ Eigen::Vector3d* VHS::run(double b, double d, double* aCoord, double* bCoord, do
 		Eigen::Vector3d v1 = u1 - normalVelocity;
 		Eigen::Vector3d v2 = u2 + normalVelocity;
 
-		finalVelocities[0] = v1;
-		finalVelocities[1] = v2;
+		finalVelocities.push_back(v1);
+		finalVelocities.push_back(v2);
 	}
 
 	std::cout << "VHS END..." << std::endl;
