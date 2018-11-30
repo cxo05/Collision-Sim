@@ -1,75 +1,45 @@
 #include "stdafx.h"
-#include "vhs.h"
+#include "VHS.h"
 #include <iostream>
-#include "Point.h"
 
-vhs::vhs(double b, double d, double* v){
-	std::cout << "VHS START--->" << std::endl;
-	this->b = b;
-	this->d = d;
-	run(v[0], v[1]); // x and y
-	//run(v[0], v[2]);
-	std::cout << "VHS END..." << std::endl;
+
+VHS::VHS(){
+	
 }
 
-void vhs::run(double u1x, double u1y) {
-	Vector u1 = Vector(u1x, u1y);
-	Vector u2 = Vector(0,0);
+Eigen::Vector3d* VHS::run(double b, double d, double* aCoord, double* bCoord, double* ua, double* ub) {
+	std::cout << "VHS START--->" << std::endl;
 
-	Vector v1 = Vector();
-	Vector v2 = Vector();
+	Eigen::Vector3d finalVelocities[2];
 
-	/*float vectorProjection = Targetpos.getMagnitude()
-		* (Targetpos.dotProduct(&particle->getinitialVelocity()))
-		/ (Targetpos.getMagnitude() * (particle->getinitialVelocity()).getMagnitude());*/
+	std::cout << "Diameter : " << d << std::endl;
+	std::cout << "Miss Distance : " << b << std::endl;
 
-	if (collisionCheck(this->b , this->d)) {
-		std::cout << "Combined Radius : " << this->d << std::endl;
-
-		std::cout << "Distance to closest point from target : " << this->b << std::endl;
-
-		float angletoTarget_atContact = acos(this->b / this->d);
+	if (collisionCheck(b, d)) {
+		double angletoTarget_atContact = acos(b / d);
 		std::cout << "angletoTarget_atContact : " << angletoTarget_atContact * 180 / 3.14159265 << std::endl;
 
-		v1.setXCoordinate(
-			u1.getXCoordinate() +
-			cos(angletoTarget_atContact) * (
-				cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
-				)
-		);
+		Eigen::Vector3d p1(aCoord[0], aCoord[1], aCoord[2]);
+		Eigen::Vector3d p2(bCoord[0], bCoord[1], bCoord[2]);
+		Eigen::Vector3d u1(ua[0], ua[1], ua[2]);
+		Eigen::Vector3d u2(ub[0], ub[1], ub[2]);
 
-		v1.setYCoordinate(
-			u1.getYCoordinate() +
-			sin(angletoTarget_atContact) * (
-				cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
-				)
-		);
+		Eigen::Vector3d normalVector = (p1 - p2) / (p1 - p2).norm();
+		Eigen::Vector3d relativeVelocity = u1 - u2;
+		Eigen::Vector3d normalVelocity = (relativeVelocity.dot(normalVector))*normalVector;
+		Eigen::Vector3d v1 = u1 - normalVelocity;
+		Eigen::Vector3d v2 = u2 + normalVelocity;
 
-		v2.setXCoordinate(
-			u2.getXCoordinate() +
-			cos(angletoTarget_atContact) * (
-				cos(angletoTarget_atContact)*(u1.getXCoordinate() - u2.getXCoordinate()) +
-				sin(angletoTarget_atContact)*(u2.getYCoordinate() - u1.getYCoordinate())
-				)
-		);
-
-		v2.setYCoordinate(
-			u2.getYCoordinate() +
-			sin(angletoTarget_atContact) * (
-				cos(angletoTarget_atContact)*(u2.getXCoordinate() - u1.getXCoordinate()) +
-				sin(angletoTarget_atContact)*(u1.getYCoordinate() - u2.getYCoordinate())
-				)
-		);
-
-		std::cout << "Particle final velocity : " << v1.toString() << std::endl;
-		std::cout << "Target final velocity : " << v2.toString() << std::endl;
+		finalVelocities[0] = v1;
+		finalVelocities[1] = v2;
 	}
-	return;
+
+	std::cout << "VHS END..." << std::endl;
+	
+	return finalVelocities;
 }
 
-bool vhs::collisionCheck(double b, double d) {
+bool VHS::collisionCheck(double b, double d) {
 	if (b < d) {
 		std::cout << "Collision : TRUE" << std::endl;
 		return true;
@@ -80,32 +50,5 @@ bool vhs::collisionCheck(double b, double d) {
 	}
 }
 
-/*bool vhs::collisionCheck(Particle * p, Particle t) {
-	Vector Targetpos = t.getinitialPosition();
-	//TODO More cases
-	if (t.getinitialVelocity().getMagnitude() == 0) {
-		std::cout << "Collision : TRUE" << std::endl;
-		return true;
-	}
-
-	float vectorProjection = Targetpos.getMagnitude()
-		* (Targetpos.dotProduct(&(p->getinitialVelocity()))) 
-		/ (Targetpos.getMagnitude() * (p->getinitialVelocity()).getMagnitude());
-	std::cout << "Vector Proj : " << vectorProjection << std::endl;
-
-	float DistanceToClosestPointFromTarget = sqrt(Targetpos.getMagnitude()*Targetpos.getMagnitude() - vectorProjection * vectorProjection);
-	std::cout << "Distance to closest point from target : " << std::endl;
-
-	float combinedRadius = p->getDiameter() / 2 + t.getDiameter() / 2;
-
-	if (DistanceToClosestPointFromTarget < combinedRadius) {
-		std::cout << "Collision : TRUE" << std::endl;
-		return true;
-	} else {
-		std::cout << "Collision : FALSE" << std::endl;
-		return false;
-	}
-}*/
-
-vhs::~vhs(){
+VHS::~VHS(){
 }
