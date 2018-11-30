@@ -91,3 +91,23 @@ void RandomParameters::setDiameter(double diameter) {
 void RandomParameters::setTemperature(double T) {
 	this->T = T;
 }
+
+double RandomParameters::getCoefficientOfViscosity() {
+	return coefficient_of_viscosity;
+}
+
+double RandomParameters::getMass() {
+	return mass;
+}
+
+double RandomParameters::getViscosityIndex() {
+	return viscosity_index;
+}
+
+double RandomParameters::getDiameter() {
+	return diameter;
+}
+
+double RandomParameters::getTemperature() {
+	return T;
+}
