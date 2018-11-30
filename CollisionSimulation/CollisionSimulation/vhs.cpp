@@ -4,7 +4,6 @@
 
 
 VHS::VHS(){
-	
 }
 
 std::vector<Eigen::Vector3d> VHS::run(double b, double d, double* aCoord, double* bCoord, double* ua, double* ub) {
@@ -16,15 +15,20 @@ std::vector<Eigen::Vector3d> VHS::run(double b, double d, double* aCoord, double
 	std::cout << "Miss Distance : " << b << std::endl;
 
 	if (collisionCheck(b, d)) {
-		double angletoTarget_atContact = acos(b / d);
-		std::cout << "angletoTarget_atContact : " << angletoTarget_atContact * 180 / 3.14159265 << std::endl;
-
-		Eigen::Vector3d p1(aCoord[0], aCoord[1], aCoord[2]);
-		Eigen::Vector3d p2(bCoord[0], bCoord[1], bCoord[2]);
+		//Initialize vectors
+		Eigen::Vector3d ip1(aCoord[0], aCoord[1], aCoord[2]);
+		Eigen::Vector3d ip2(bCoord[0], bCoord[1], bCoord[2]);
 		Eigen::Vector3d u1(ua[0], ua[1], ua[2]);
 		Eigen::Vector3d u2(ub[0], ub[1], ub[2]);
 
-		Eigen::Vector3d normalVector = (p1 - p2) / (p1 - p2).norm();
+		//Finding relative position of 1 at contact
+		Eigen::Vector3d newV = u2 - u1;
+		Eigen::Vector3d temPos;
+		temPos = (((newV).dot(ip2 - ip1)) / (newV).dot(newV) * (newV)) + ip1;
+		Eigen::Vector3d positionAtContact = temPos - sqrt(d * d - b * b) * newV.normalized();
+
+		//Computing final velocities
+		Eigen::Vector3d normalVector = (positionAtContact - ip2) / (positionAtContact - ip2).norm();
 		Eigen::Vector3d relativeVelocity = u1 - u2;
 		Eigen::Vector3d normalVelocity = (relativeVelocity.dot(normalVector))*normalVector;
 		Eigen::Vector3d v1 = u1 - normalVelocity;
