@@ -1,16 +1,13 @@
 #pragma once
-#include "Particle.h"
-#include <vector>
+#include <Eigen/Dense>
+#include <Eigen/StdVector>
 
-class vhs
+class VHS
 {
-	double b;
-	double d;
-
 	public:
-		vhs(double b, double d, double* v1);
-		void run(double u1, double u2);
+		VHS();
+		std::vector<Eigen::Vector3d> run(double b, double d, double* aCoord, double* bCoord, double* u1, double* u2);
 		bool collisionCheck(double b, double d);
-		~vhs();
+		~VHS();
 };
 
