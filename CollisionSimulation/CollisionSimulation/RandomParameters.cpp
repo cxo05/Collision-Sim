@@ -24,7 +24,7 @@ double RandomParameters::get_CrRef() {
 	//Total collision cross section
 	double sigmaT = 3.1415 * radius * radius;
 	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
-					(viscosity_index * sigmaT * tgamma(4-v));
+					(coefficient_of_viscosity * sigmaT * tgamma(4-v));
 	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
 }
