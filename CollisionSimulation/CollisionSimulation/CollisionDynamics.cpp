@@ -23,14 +23,14 @@
 CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, double n, Gas g)
 	: b(b), m(m), c(c), k(k), n(n), g(g)
 {
-	getDeflectionAngle(getApseLine(getPositiveRootW()));
+	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
 }
 
-CollisionDynamics::CollisionDynamics(double b, double c, Gas g)
-	: b(b), c(c), g(g)
+CollisionDynamics::CollisionDynamics(double b, double c, Gas g, double* cr)
+	: b(b), c(c), g(g), cr(cr)
 {
 	extractVariables(g);
-	getDeflectionAngle(getApseLine(getPositiveRootW()));
+	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
 }
 
 /**
@@ -61,6 +61,14 @@ double rootFunction(double x, void *p) {
 	struct function_params * params
 		= (struct function_params *)p;
 
+	//std::cout << params->b << std::endl;
+	//std::cout << params->m << std::endl;
+	//std::cout << params->c << std::endl;
+	//std::cout << params->k << std::endl;
+	//std::cout << params->n << std::endl;
+
+	//system("pause");
+	
 	double result = 1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
 	return result;
 }	
@@ -68,11 +76,22 @@ double rootFunction(double x, void *p) {
 /**
 	Getting deflection angle
 **/
-void CollisionDynamics::getDeflectionAngle(double mApseAngle) {
+double CollisionDynamics::getDeflectionAngle(double mApseAngle) {
 	std::cout << "//////////////GETTING DEFLECTION ANGLE///////////////" << std::endl;
 	std::cout << "////////////// FOR A PARTICLES WITH B : " << b << ", M : " << m << ", C : " << c << ", K : " << k << ", N : " << n << " ///////////////" << std::endl;
-	std::cout << "////////////// DEFLECTION ANGLE: " << M_PI - 2 * mApseAngle <<	" ///////////////" << std::endl;
+	std::cout << "////////////// DEFLECTION ANGLE: " << (M_PI - 2 * mApseAngle) * 180 / M_PI <<	" ///////////////" << std::endl;
 	std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
+	return (M_PI - 2 * mApseAngle);
+}
+
+void CollisionDynamics::getFinalVelocity(double mDeflectionAngle){
+	double epsilon = 1.57;
+	double cr_absolute = pow(pow(cr[0], 2) + pow(cr[1], 2) + pow(cr[2], 2), 0.5);
+	double u_star = cos(mDeflectionAngle) * cr[0] + sin(mDeflectionAngle) * sin(epsilon) * pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
+	double v_star = cos(mDeflectionAngle) * cr[1] + sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) - cr[0] * cr[1] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
+	double w_star = cos(mDeflectionAngle) * cr[2] - sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) + cr[0] * cr[2] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
+	double cr_star_absolute = pow(pow(u_star, 2) + pow(v_star, 2) + pow(w_star, 2), 0.5);
+	std::cout << "//////////////FINAL VELOCITY FOUND : " << cr_star_absolute << "///////////////" << std::endl << std::endl;
 }
 
 /**
@@ -126,7 +145,7 @@ double CollisionDynamics::getPositiveRootW() {
 	const gsl_root_fsolver_type *T;
 	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
-	double x_lo = 0.1, x_hi = 2.0;
+	double x_lo = 0.0, x_hi = 1.0;
 	gsl_function F;
 
 	struct function_params params = { b, m, c, k, n };
