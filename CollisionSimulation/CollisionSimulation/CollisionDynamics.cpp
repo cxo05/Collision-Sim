@@ -61,17 +61,34 @@ double rootFunction(double x, void *p) {
 	struct function_params * params
 		= (struct function_params *)p;
 
-	std::cout << params->b << std::endl;
+	/*std::cout << params->b << std::endl;
 	std::cout << params->m << std::endl;
 	std::cout << params->c << std::endl;
 	std::cout << params->k << std::endl;
-	std::cout << params->n << std::endl;
+	std::cout << params->n << std::endl;*/
 
-	system("pause");
-	
+
 	double result = 1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c));
 	return result;
 }	
+
+/**
+Function to find the theta(result is the actual equation)
+**/
+double rootFunctionIntegral(double x, void *p) {
+	struct function_params * params
+		= (struct function_params *)p;
+
+	/*std::cout << params->b << std::endl;
+	std::cout << params->m << std::endl;
+	std::cout << params->c << std::endl;
+	std::cout << params->k << std::endl;
+	std::cout << params->n << std::endl;*/
+
+
+	double result = pow(1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c)), -0.5);
+	return result;
+}
 
 /**
 	Getting deflection angle
@@ -118,7 +135,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 
 	struct function_params params = { b, m, c, k, n };
 
-	F2.function = &rootFunction;
+	F2.function = &rootFunctionIntegral;
 	F2.params = &params;
 
 	/*
@@ -150,7 +167,7 @@ double CollisionDynamics::getPositiveRootW() {
 	const gsl_root_fsolver_type *T;
 	gsl_root_fsolver *s;
 	double r = 0, r_expected = sqrt(5.0);
-	double x_lo = 0.0, x_hi = 5.0;
+	double x_lo = 0, x_hi = 1.1;
 	gsl_function F;
 
 	struct function_params params = { b, m, c, k, n };
@@ -204,7 +221,7 @@ double CollisionDynamics::getPositiveRootW() {
 }
 
 double CollisionDynamics::getDeflectionAngle() {
-	return 180 - deflectionAngle * 180 / M_PI;
+	return deflectionAngle * 180 / M_PI;
 }
 
 double* CollisionDynamics::getFinalV() {
