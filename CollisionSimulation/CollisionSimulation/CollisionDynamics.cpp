@@ -85,7 +85,8 @@ double rootFunctionIntegral(double x, void *p) {
 	std::cout << params->k << std::endl;
 	std::cout << params->n << std::endl;*/
 
-
+	std::cout << "TEST HERE" << (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c)) << std::endl;
+	std::cout << "W zero : " <<	params->b * pow((params->m*pow(params->c, 2)/params->k), 1/(params->n-1));
 	double result = pow(1.0 - x * x - (params->k*pow((params->b / x), 1 - params->n) / (params->n - 1) / (.5*params->m*params->c*params->c)), -0.5);
 	return result;
 }
@@ -142,6 +143,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	Integration method is (should be) Gaussian quadrature 
 	*/
 	gsl_integration_qag(&F2, lowerLim, upperLim, abserr, relerr, np, GSL_INTEG_GAUSS15, w, &result, &error);
+	//gsl_integration_qagp(&F2, pts);
 
 	printf("result = % .18f\n", result);
 	printf("estimated error = % .18f\n", error);
