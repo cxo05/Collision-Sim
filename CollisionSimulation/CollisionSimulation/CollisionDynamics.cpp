@@ -81,7 +81,8 @@ double CollisionDynamics::getDeflectionAngle(double mApseAngle) {
 	std::cout << "////////////// FOR A PARTICLES WITH B : " << b << ", M : " << m << ", C : " << c << ", K : " << k << ", N : " << n << " ///////////////" << std::endl;
 	std::cout << "////////////// DEFLECTION ANGLE: " << (M_PI - 2 * mApseAngle) * 180 / M_PI <<	" ///////////////" << std::endl;
 	std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
-	return (M_PI - 2 * mApseAngle);
+	deflectionAngle = M_PI - 2 * mApseAngle;
+	return deflectionAngle;
 }
 
 void CollisionDynamics::getFinalVelocity(double mDeflectionAngle){
@@ -90,8 +91,12 @@ void CollisionDynamics::getFinalVelocity(double mDeflectionAngle){
 	double u_star = cos(mDeflectionAngle) * cr[0] + sin(mDeflectionAngle) * sin(epsilon) * pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
 	double v_star = cos(mDeflectionAngle) * cr[1] + sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) - cr[0] * cr[1] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
 	double w_star = cos(mDeflectionAngle) * cr[2] - sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) + cr[0] * cr[2] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
-	double cr_star_absolute = pow(pow(u_star, 2) + pow(v_star, 2) + pow(w_star, 2), 0.5);
-	std::cout << "//////////////FINAL VELOCITY FOUND : " << cr_star_absolute << "///////////////" << std::endl << std::endl;
+	finalVa[0] = u_star;
+	finalVa[1] = v_star;
+	finalVa[2] = w_star;
+	std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
+	finalV = pow(pow(u_star, 2) + pow(v_star, 2) + pow(w_star, 2), 0.5);
+	std::cout << "//////////////FINAL VELOCITY FOUND : " << finalV << "///////////////" << std::endl << std::endl;
 }
 
 /**
@@ -196,4 +201,13 @@ double CollisionDynamics::getPositiveRootW() {
 	std::cout << "//////////////ROOT SEARCH END///////////////" << std::endl;
 
 	return mRoot;
+}
+
+double CollisionDynamics::getDeflectionAngle() {
+	return 180 - deflectionAngle * 180 / M_PI;
+}
+
+double* CollisionDynamics::getFinalV() {
+	std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
+	return finalVa;
 }

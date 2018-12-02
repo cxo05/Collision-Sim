@@ -4,15 +4,9 @@
 #include <chrono>
 #include <iostream>
 
-RandomParameters::RandomParameters() {
-}
+#include <Eigen/Dense>
 
-double* cross_product(double u1, double u2, double u3, double v1, double v2, double v3) {
-	double uv[3];
-	uv[0] = u2 * v3 - v2 * u3;
-	uv[1] = v1 * u3 - u1 * v3;
-	uv[2] = u1 * v2 - v1 * u2;
-	return uv;
+RandomParameters::RandomParameters() {
 }
 
 double RandomParameters::get_DRef() {
@@ -61,9 +55,10 @@ void RandomParameters::get_coordinates(double* coord) {
 
 double RandomParameters::get_B(double* a_coord, double* b_coord, double* newV) {
 	double b;
-	double* tem = cross_product(newV[0], newV[1], newV[2],
-		a_coord[0] - b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
-	double numerator = sqrt(tem[0] * tem[0] + tem[1] * tem[1] + tem[2] * tem[2]);
+	Eigen::Vector3d newVasd(newV[0], newV[1], newV[2]);
+	Eigen::Vector3d asd2(a_coord[0] - b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
+	Eigen::Vector3d tem = newVasd.cross(asd2);
+	double numerator = tem.norm();
 	double denominator = sqrt(newV[0] * newV[0] + newV[1] * newV[1] + newV[2] * newV[2]);
 	b = numerator / denominator;
 	return b;
