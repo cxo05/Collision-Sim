@@ -11,7 +11,7 @@ RandomParameters::RandomParameters() {
 
 double RandomParameters::get_DRef() {
 	//Currently just set to 1.0
-	return 1.0;
+	return 2.96 * pow(10,-10);
 }
 
 double RandomParameters::get_CrRef() {
@@ -40,7 +40,7 @@ void RandomParameters::get_coordinates(double* coord) {
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density);
+							(coefficient_of_viscosity / density) * (0.1);
 
 	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	

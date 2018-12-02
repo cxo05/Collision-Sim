@@ -208,6 +208,6 @@ double CollisionDynamics::getDeflectionAngle() {
 }
 
 double* CollisionDynamics::getFinalV() {
-	std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
+	//std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
 	return finalVa;
 }

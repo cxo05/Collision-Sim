@@ -37,9 +37,12 @@ std::vector<Eigen::Vector3d> VHS::run(double b, double d, double* aCoord, double
 		finalVelocities.push_back(v1);
 		finalVelocities.push_back(v2);
 	}
-
-	std::cout << "VHS END..." << std::endl;
+	else {
+		finalVelocities.push_back(Eigen::Vector3d(0,0,0));
+		finalVelocities.push_back(Eigen::Vector3d(0,0,0));
+	}
 	
+	std::cout << "VHS END..." << std::endl;
 	return finalVelocities;
 }
 
