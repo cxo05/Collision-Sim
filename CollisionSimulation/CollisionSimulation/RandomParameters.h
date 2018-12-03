@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <Eigen/Dense>
 
 class RandomParameters {
 public:
@@ -8,9 +9,9 @@ public:
 	double coefficient_of_viscosity = 0.845 * pow(10, -5); //Hydrogen : 0.845 * 10^-5
 	double get_DRef();
 	double get_CrRef();
-	void get_3D_Cr(double* cr_vector);
-	void get_coordinates(double* coord);
-	double get_B(double* a_coord, double* b_coord, double* newV);
+	Eigen::Vector3d get_3D_Cr();
+	Eigen::Vector3d get_coordinates();
+	double get_B(Eigen::Vector3d a_coord, Eigen::Vector3d b_coord, Eigen::Vector3d newV);
 	~RandomParameters();
 
 	void setCoefficientOfViscosity(double cov);

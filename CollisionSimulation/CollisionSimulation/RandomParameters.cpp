@@ -4,8 +4,6 @@
 #include <chrono>
 #include <iostream>
 
-#include <Eigen/Dense>
-
 RandomParameters::RandomParameters() {
 }
 
@@ -23,19 +21,18 @@ double RandomParameters::get_CrRef() {
 	return Cr_ref;
 }
 
- void RandomParameters::get_3D_Cr(double* cr_vector) {
+Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	//From normal distribution of velocity of air molecules generate random 3D vector Cr
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
 	double standard_deviation = sqrt(8.314 * 298);
 	std::normal_distribution<double> distribution(mean, standard_deviation);
-	cr_vector[0] = distribution(generator);
-	cr_vector[1] = distribution(generator);
-	cr_vector[2] = distribution(generator);
+	Eigen::Vector3d cr_vector(distribution(generator), distribution(generator), distribution(generator));
+	return cr_vector;
 }
 
-void RandomParameters::get_coordinates(double* coord) {
+Eigen::Vector3d RandomParameters::get_coordinates() {
 	double alpha = 1; //1 for now
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
@@ -45,23 +42,17 @@ void RandomParameters::get_coordinates(double* coord) {
 	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	
 	//Choose 2 points within cube of width meanFreePath
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	std::uniform_real_distribution<double> unif(0, meanFreePath);
-	coord[0] = unif(generator);
-	coord[1] = unif(generator);
-	coord[2] = unif(generator);
+	Eigen::Vector3d coord(unif(generator), unif(generator), unif(generator));
+	return coord;
 }
 
-double RandomParameters::get_B(double* a_coord, double* b_coord, double* newV) {
-	double b;
-	Eigen::Vector3d newVasd(newV[0], newV[1], newV[2]);
-	Eigen::Vector3d asd2(a_coord[0] - b_coord[0], a_coord[1] - b_coord[1], a_coord[2] - b_coord[2]);
-	Eigen::Vector3d tem = newVasd.cross(asd2);
-	double numerator = tem.norm();
-	double denominator = sqrt(newV[0] * newV[0] + newV[1] * newV[1] + newV[2] * newV[2]);
-	b = numerator / denominator;
-	return b;
+double RandomParameters::get_B(Eigen::Vector3d a_coord, Eigen::Vector3d b_coord, Eigen::Vector3d newV) {
+	double numerator = (newV.cross(a_coord - b_coord)).norm();
+	double denominator = newV.norm();
+	return numerator / denominator;
 }
 
 RandomParameters::~RandomParameters() {

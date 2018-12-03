@@ -26,7 +26,7 @@ CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, dou
 	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
 }
 
-CollisionDynamics::CollisionDynamics(double b, double c, Gas g, double* cr)
+CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr)
 	: b(b), c(c), g(g), cr(cr)
 {
 	extractVariables(g);
@@ -105,10 +105,10 @@ double CollisionDynamics::getDeflectionAngle(double mApseAngle) {
 
 void CollisionDynamics::getFinalVelocity(double mDeflectionAngle){
 	double epsilon = 1.57;
-	double cr_absolute = pow(pow(cr[0], 2) + pow(cr[1], 2) + pow(cr[2], 2), 0.5);
-	double u_star = cos(mDeflectionAngle) * cr[0] + sin(mDeflectionAngle) * sin(epsilon) * pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
-	double v_star = cos(mDeflectionAngle) * cr[1] + sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) - cr[0] * cr[1] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
-	double w_star = cos(mDeflectionAngle) * cr[2] - sin(mDeflectionAngle) * (cr_absolute * cr[2] * cos(epsilon) + cr[0] * cr[2] * sin(epsilon)) / pow(pow(cr[1], 2) + pow(cr[2], 2), 0.5);
+	double cr_absolute = cr.norm();
+	double u_star = cos(mDeflectionAngle) * cr.data()[0] + sin(mDeflectionAngle) * sin(epsilon) * pow(pow(cr.data()[1], 2) + pow(cr.data()[2], 2), 0.5);
+	double v_star = cos(mDeflectionAngle) * cr.data()[1] + sin(mDeflectionAngle) * (cr_absolute * cr.data()[2] * cos(epsilon) - cr.data()[0] * cr.data()[1] * sin(epsilon)) / pow(pow(cr.data()[1], 2) + pow(cr.data()[2], 2), 0.5);
+	double w_star = cos(mDeflectionAngle) * cr.data()[2] - sin(mDeflectionAngle) * (cr_absolute * cr.data()[2] * cos(epsilon) + cr.data()[0] * cr.data()[2] * sin(epsilon)) / pow(pow(cr.data()[1], 2) + pow(cr.data()[2], 2), 0.5);
 	finalVa[0] = u_star;
 	finalVa[1] = v_star;
 	finalVa[2] = w_star;
