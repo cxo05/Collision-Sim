@@ -125,7 +125,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	std::cout << "USING ROOT : " << mRoot << std::endl;
 
 	double lowerLim = 0., upperLim = mRoot; // limits of integration
-	double abserr = 0., relerr = 1.e-5; // requested errors
+	double abserr = 0., relerr = 1.e-6; // requested errors
 	double result; // the integral value
 	double error; // the error estimate
 
