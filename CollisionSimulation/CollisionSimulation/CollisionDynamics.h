@@ -6,8 +6,7 @@ class CollisionDynamics
 {
 private:
 	double b, m, c, k, n, deflectionAngle, finalV;
-	Eigen::Vector3d cr, cr2;
-	double finalVa[3];
+	Eigen::Vector3d cr, cr2, finalVa;
 	Gas g;
 
 	int OoM(double mRoot);
@@ -22,6 +21,6 @@ public:
 	void getFinalVelocity(double mDeflectionAngle);
 
 	double getDeflectionAngle();
-	double* getFinalV1();
-	double* getFinalV2();
+	Eigen::Vector3d getFinalV1();
+	Eigen::Vector3d getFinalV2();
 };
