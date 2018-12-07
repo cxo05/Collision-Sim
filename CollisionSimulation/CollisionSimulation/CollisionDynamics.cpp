@@ -26,8 +26,8 @@ CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, dou
 	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
 }
 
-CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr)
-	: b(b), c(c), g(g), cr(cr)
+CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2)
+	: b(b), c(c), g(g), cr(cr), cr2(cr2)
 {
 	extractVariables(g);
 	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
@@ -124,8 +124,13 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
 	std::cout << "USING ROOT : " << mRoot << std::endl;
 
+	int pwr = OoM(mRoot);
+
+	double relerr = pow(10, (pwr + 2));
+	//std::cout << "pwr = " << pwr << "   relerr = " << relerr << std::endl;
+
 	double lowerLim = 0., upperLim = mRoot; // limits of integration
-	double abserr = 0., relerr = 1.e-6; // requested errors
+	double abserr = pow(10, (pwr)); // requested errors
 	double result; // the integral value
 	double error; // the error estimate
 
@@ -156,6 +161,10 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	std::cout << "//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
 
 	return result;
+}
+
+int CollisionDynamics::OoM(double mRoot) {
+	return floor(log10(mRoot));
 }
 
 /**
@@ -227,7 +236,15 @@ double CollisionDynamics::getDeflectionAngle() {
 	return deflectionAngle * 180 / M_PI;
 }
 
-double* CollisionDynamics::getFinalV() {
-	//std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
+double* CollisionDynamics::getFinalV1() {
+	std::cout << "HERE!!!::: " << finalVa[0] << "|" << finalVa[1] << "|" << finalVa[2] << std::endl;
 	return finalVa;
+}
+
+double* CollisionDynamics::getFinalV2() {
+	double finalVb[3];
+	finalVb[0] = cr2[0] - (finalVa[0] - cr[0]);
+	finalVb[1] = cr2[1] - (finalVa[1] - cr[1]);
+	finalVb[2] = cr2[2] - (finalVa[2] - cr[2]);
+	return finalVb;
 }
