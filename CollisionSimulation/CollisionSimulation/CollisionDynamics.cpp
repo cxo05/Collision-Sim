@@ -27,7 +27,7 @@ CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, dou
 }
 
 CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2)
-	: b(b), c(c), g(g), cr(cr), cr2(cr2)
+	: b(b), c(c), g(g), cr(cr1), cr2(cr2)
 {
 	extractVariables(g);
 	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));

@@ -38,7 +38,8 @@ double Gas::getNu()
 
 double Gas::getKappa()
 {
-	double gas_constant = 8.314;
+	double k = 1.380658e23;
+	double gas_constant = k/mol_mass;
 	double pi = 3.1415926535897;
 		
 	// u = 5  * m * (R * T / pi) ^ 0.5 * (2 * m * R * T / k) ^ (2 / (n - 1)) / 8 * A_2(n) * (gamma(4 - 2 / (n - 1))) 
@@ -52,7 +53,7 @@ double Gas::getKappa()
 	// k = exp4
 
 	double expression_1 = (viscosity_co * (8 * getNumericalFactor() * tgamma(4 - 2 / (getNu() - 1))));
-	double expression_2 = expression_1 / pow(5 * mol_mass * (gas_constant * getTemperature() / pi), 0.5);
+	double expression_2 = expression_1 / 5 * mol_mass * sqrt(gas_constant * getTemperature() / pi);
 	double expression_3 = pow(expression_2, (getNu() - 1) / 2);
 	double expression_4 = (2 * mol_mass * gas_constant * 273.15) / expression_3;
 	return expression_4;

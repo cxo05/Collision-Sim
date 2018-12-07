@@ -26,7 +26,7 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
-	double standard_deviation = sqrt(8.314 * 298);
+	double standard_deviation = sqrt(1.380658e23/ 3.34e27 * 298);
 	std::normal_distribution<double> distribution(mean, standard_deviation);
 	Eigen::Vector3d cr_vector(distribution(generator), distribution(generator), distribution(generator));
 	return cr_vector;
