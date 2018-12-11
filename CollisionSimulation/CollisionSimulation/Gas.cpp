@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Gas.h"
 #include <cmath>
+#include <iostream>
 
 Gas::Gas()
 {
@@ -38,7 +39,7 @@ double Gas::getNu()
 
 double Gas::getKappa()
 {
-	double k = 1.380658e23;
+	double k = 1.380658e-23;
 	double gas_constant = k/mol_mass;
 	double pi = 3.1415926535897;
 		
@@ -53,9 +54,9 @@ double Gas::getKappa()
 	// k = exp4
 
 	double expression_1 = (viscosity_co * (8 * getNumericalFactor() * tgamma(4 - 2 / (getNu() - 1))));
-	double expression_2 = expression_1 / 5 * mol_mass * sqrt(gas_constant * getTemperature() / pi);
+	double expression_2 = expression_1 / (5 * mol_mass * sqrt(gas_constant * getTemperature() / pi));
 	double expression_3 = pow(expression_2, (getNu() - 1) / 2);
-	double expression_4 = (2 * mol_mass * gas_constant * 273.15) / expression_3;
+	double expression_4 = (2 * mol_mass * gas_constant * getTemperature()) / expression_3;
 	return expression_4;
 }
 

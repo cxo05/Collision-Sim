@@ -9,13 +9,13 @@ RandomParameters::RandomParameters() {
 
 double RandomParameters::get_DRef() {
 	//Currently just set to 1.0
-	return 2.96 * pow(10,-10);
+	return 2.96e-10;
 }
 
 double RandomParameters::get_CrRef() {
 	//Total collision cross section
-	double sigmaT = 3.1415 * radius * radius;
-	double inner = (15/8 * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
+	double sigmaT = 3.1415 * diameter * diameter;
+	double inner = (15./8. * sqrt(3.1415*mass*k) * pow(4*k/mass, v) * pow(T, 0.5+v)) /
 					(coefficient_of_viscosity * sigmaT * tgamma(4-v));
 	double Cr_ref = pow(sqrt(inner), 1/v);
 	return Cr_ref;
@@ -26,18 +26,18 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
-	double standard_deviation = sqrt(1.380658e23/ 3.34e27 * 298);
+	double standard_deviation = sqrt(1.380658e-23/ 3.34e-27 * 273);
 	std::normal_distribution<double> distribution(mean, standard_deviation);
 	Eigen::Vector3d cr_vector(distribution(generator), distribution(generator), distribution(generator));
 	return cr_vector;
 }
 
 Eigen::Vector3d RandomParameters::get_coordinates() {
-	double alpha = 1; //1 for now
+	double alpha = 1.35; //1 for now
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density) * (0.1);
+							(coefficient_of_viscosity / density);
 
 	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	

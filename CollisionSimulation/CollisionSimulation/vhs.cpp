@@ -7,12 +7,12 @@ VHS::VHS(){
 }
 
 std::vector<Eigen::Vector3d> VHS::run(double b, double d, Eigen::Vector3d aCoord, Eigen::Vector3d bCoord, Eigen::Vector3d u1, Eigen::Vector3d u2) {
-	std::cout << "VHS START--->" << std::endl;
+	//std::cout << "VHS START--->" << std::endl;
 
 	std::vector<Eigen::Vector3d> finalVelocities;
 
-	std::cout << "Diameter : " << d << std::endl;
-	std::cout << "Miss Distance : " << b << std::endl;
+	//std::cout << "Diameter : " << d << std::endl;
+	//std::cout << "Miss Distance : " << b << std::endl;
 
 	if (collisionCheck(b, d)) {
 		//Finding relative position of 1 at contact
@@ -35,17 +35,17 @@ std::vector<Eigen::Vector3d> VHS::run(double b, double d, Eigen::Vector3d aCoord
 		finalVelocities.push_back(Eigen::Vector3d(0,0,0));
 	}
 	
-	std::cout << "VHS END..." << std::endl;
+	//std::cout << "VHS END..." << std::endl;
 	return finalVelocities;
 }
 
 bool VHS::collisionCheck(double b, double d) {
 	if (b < d) {
-		std::cout << "Collision : TRUE" << std::endl;
+		//std::cout << "Collision : TRUE" << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "Collision : FALSE" << std::endl;
+		//std::cout << "Collision : FALSE" << std::endl;
 		return false;
 	}
 }
