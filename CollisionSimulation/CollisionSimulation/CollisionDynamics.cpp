@@ -213,15 +213,11 @@ double CollisionDynamics::getDeflectionAngle() {
 }
 
 Eigen::Vector3d CollisionDynamics::getFinalV1() {
-	//std::cout << "HERE!!!::: " << finalVa.data()[0] << "|" << finalVa.data()[1] << "|" << finalVa.data()[2] << std::endl;
 	Eigen::Vector3d final_cr1((cr1.data()[0] + cr2.data()[0] + finalVa.data()[0])/2, (cr1.data()[1] + cr2.data()[1] + finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] + finalVa.data()[2]) / 2);
 	return final_cr1;
 }
 
 Eigen::Vector3d CollisionDynamics::getFinalV2() {
 	Eigen::Vector3d final_cr2((cr1.data()[0] + cr2.data()[0] - finalVa.data()[0]) / 2, (cr1.data()[1] + cr2.data()[1] - finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] - finalVa.data()[2]) / 2);
-	//std::cout << "newV2!!!::: " << newV2.data()[0] << "|" << cr2.data()[1] << "|" << cr2.data()[2] << std::endl;
-	//std::cout << "finalVa!!!::: " << finalVa.data()[0] << "|" << finalVa.data()[1] << "|" << finalVa.data()[2] << std::endl;
-	//std::cout << "cr!!!::: " << cr.data()[0] << "|" << cr.data()[1] << "|" << cr.data()[2] << std::endl;
 	return final_cr2;
 }
