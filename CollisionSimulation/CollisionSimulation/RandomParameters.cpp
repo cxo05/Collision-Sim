@@ -32,12 +32,48 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	return cr_vector;
 }
 
+Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1) {
+	double n = 1; //TODO Get n
+
+	unsigned seed = (unsigned)std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator(seed);
+	//Get d
+	std::uniform_real_distribution<double> unif(0 , diameter * diameter);
+	double d = sqrt(unif(generator));
+
+	//Get l
+	std::gamma_distribution<double> gamma(1.0, n * 3.1415 * diameter * diameter);
+	double l = gamma(generator);
+
+	Eigen::Vector3d scaled = (l / cr1.norm()) * cr1;
+
+	double angle = asin(d/l);
+	Eigen::Matrix3d rotationMatrix;
+	rotationMatrix << 1, 0, 0,
+		0, cos(angle), -sin(angle),
+		0, sin(angle), cos(angle);
+
+	Eigen::Vector3d raisedByd = rotationMatrix * scaled;
+
+	//Generate random angle
+	std::uniform_real_distribution<double> unifAngle(0, 2 * 3.1415);
+	double randomAngle = unifAngle(generator);
+
+	//Rotating raisedByd by random angle about cr1
+	Eigen::Vector3d a_parr_b = raisedByd.dot(cr1) / cr1.dot(cr1) * cr1;
+	Eigen::Vector3d a_perp_b = raisedByd - a_parr_b;
+	Eigen::Vector3d w = cr1.cross(a_perp_b);
+
+	Eigen::Vector3d coord = a_perp_b.norm() * ((cos(randomAngle) / a_perp_b.norm()) * a_perp_b + (sin(randomAngle) / w.norm()) * w) + a_parr_b;
+	return coord;
+}
+
 Eigen::Vector3d RandomParameters::get_coordinates() {
 	double alpha = 1.35; //1 for now
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density);
+							(coefficient_of_viscosity / density) * 0.05;
 
 	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	
