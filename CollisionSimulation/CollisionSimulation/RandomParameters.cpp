@@ -37,9 +37,11 @@ Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Ei
 
 	unsigned seed = (unsigned)std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
+	
 	//Get d
 	std::uniform_real_distribution<double> unif(0 , diameter * diameter);
 	double d = sqrt(unif(generator));
+	std::cout << "d : " << d << std::endl;
 
 	//Get l
 	std::gamma_distribution<double> gamma(1.0, n * 3.1415 * diameter * diameter);
@@ -47,7 +49,8 @@ Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Ei
 
 	Eigen::Vector3d scaled = (l / cr1.norm()) * cr1;
 
-	double angle = asin(d/l);
+	double angle = atan(d/l);
+
 	Eigen::Matrix3d rotationMatrix;
 	rotationMatrix << 1, 0, 0,
 		0, cos(angle), -sin(angle),
