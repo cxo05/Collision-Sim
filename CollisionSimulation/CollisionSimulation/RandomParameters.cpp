@@ -37,7 +37,7 @@ Eigen::Vector3d RandomParameters::get_coordinates() {
 	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
 							(5 * (alpha + 1) * (alpha + 2)) * 
 							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density) * 0.05;
+							(coefficient_of_viscosity / density) * 0.08;
 
 	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
 	

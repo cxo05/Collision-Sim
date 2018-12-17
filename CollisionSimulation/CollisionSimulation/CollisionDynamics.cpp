@@ -19,12 +19,6 @@
 	3) Finally finds the deflection angle (Eqn 2.21)
 
 **/
-CollisionDynamics::CollisionDynamics(double b, double m, double c, double k, double n, Gas g)
-	: b(b), m(m), c(c), k(k), n(n), g(g)
-{
-	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
-}
-
 CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2, Eigen::Vector3d newV, double angle )
 	: b(b), c(c), g(g), cr1(cr1), cr2(cr2), newV(newV), epsilon(angle)
 {
@@ -73,40 +67,35 @@ double rootFunctionIntegral(double x, void *p) {
 	Getting deflection angle
 **/
 double CollisionDynamics::getDeflectionAngle(double mApseAngle) {
-	//std::cout << "//////////////GETTING DEFLECTION ANGLE///////////////" << std::endl;
-	//std::cout << "////////////// FOR A PARTICLES WITH B : " << b << ", M : " << m << ", C : " << c << ", K : " << k << ", N : " << n << " ///////////////" << std::endl;
-	//std::cout << "////////////// DEFLECTION ANGLE: " << (M_PI - 2 * mApseAngle) * 180 / M_PI <<	" ///////////////" << std::endl;
-	//std::cout << "//////////////FINISHED GETTING DEFLECTION ANGLE///////////////" << std::endl << std::endl;
 	deflectionAngle = M_PI - 2 * mApseAngle;
 	return deflectionAngle;
 }
 
 void CollisionDynamics::getFinalVelocity(double mDeflectionAngle){
-	double newV_absolute = newV.norm();
 	double u_star = cos(mDeflectionAngle) * newV.data()[0] + sin(mDeflectionAngle) * sin(epsilon) * pow(pow(newV.data()[1], 2) + pow(newV.data()[2], 2), 0.5);
-	double v_star = cos(mDeflectionAngle) * newV.data()[1] + sin(mDeflectionAngle) * (newV_absolute * newV.data()[2] * cos(epsilon) - newV.data()[0] * newV.data()[1] * sin(epsilon)) / pow(pow(newV.data()[1], 2) + pow(newV.data()[2], 2), 0.5);
-	double w_star = cos(mDeflectionAngle) * newV.data()[2] - sin(mDeflectionAngle) * (newV_absolute * newV.data()[2] * cos(epsilon) + newV.data()[0] * newV.data()[2] * sin(epsilon)) / pow(pow(newV.data()[1], 2) + pow(newV.data()[2], 2), 0.5);
+	double v_star = cos(mDeflectionAngle) * newV.data()[1] + sin(mDeflectionAngle) * (newV.norm() * newV.data()[2] * cos(epsilon) - newV.data()[0] * newV.data()[1] * sin(epsilon)) / pow(pow(newV.data()[1], 2) + pow(newV.data()[2], 2), 0.5);
+	double w_star = cos(mDeflectionAngle) * newV.data()[2] - sin(mDeflectionAngle) * (newV.norm() * newV.data()[1] * cos(epsilon) + newV.data()[0] * newV.data()[2] * sin(epsilon)) / pow(pow(newV.data()[1], 2) + pow(newV.data()[2], 2), 0.5);
 	finalVa = Eigen::Vector3d(u_star,v_star,w_star);
-	//std::cout << "HERE!!!::: " << finalVa.data()[0] << "|" << finalVa.data()[1] << "|" << finalVa.data()[2] << std::endl;
-	//std::cout << "HERE!!!::: " << mDeflectionAngle << "|" << cos(mDeflectionAngle) << "|" << newV.data()[0]  << std::endl;
-	//finalV = pow(pow(u_star, 2) + pow(v_star, 2) + pow(w_star, 2), 0.5);
-	//std::cout << "//////////////FINAL VELOCITY FOUND : " << finalV << "///////////////" << std::endl << std::endl;
+	std::cout << "EPSILON >> " << epsilon << " DELFECTION ANGLE >> " << mDeflectionAngle << std::endl;
+	std::cout << "U >> " << newV.data()[0] << " V >> " << newV.data()[1] << " W >> " << newV.data()[2] << " === " << newV.norm() << std::endl;
+	std::cout << "U* >> " << u_star << " V* >> " << v_star << " W* >> " << w_star << " === " << finalVa.norm() << std::endl;
 }
 
 /**
 	Getting Apse line angle
 **/
 double CollisionDynamics::getApseLine(double mRoot) {
-	//std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
-	//std::cout << "USING ROOT : " << mRoot << std::endl;
+	std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
+	std::cout << "USING ROOT : " << mRoot << std::endl; 
 
 	int pwr = OoM(mRoot);
 
-	double relerr = pow(10, (pwr + 1));
+	double relerr = pow(10, (pwr - 3));
+	//double relerr = 10e-7;
 	//std::cout << "pwr = " << pwr << "   relerr = " << relerr << std::endl;
 
 	double lowerLim = 0., upperLim = mRoot; // limits of integration
-	double abserr = pow(10, (pwr)); // requested errors
+	double abserr = 0.; // requested errors
 	double result; // the integral value
 	double error; // the error estimate
 
@@ -127,14 +116,14 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	double singular_pts[] = { lowerLim, upperLim };
 	gsl_integration_qagp(&F2, singular_pts, 2, abserr, relerr, np, w, &result, &error);
 
-	//printf("result = % .18f\n", result);
-	//printf("estimated error = % .18f\n", error);
-	//printf("intervals = %zu\n", w->size);
+	printf("result = % .18f\n", result);
+	printf("estimated error = % .18f\n", error);
+	printf("intervals = %zu\n", w->size);
 
 	gsl_integration_workspace_free(w);
 
-	//std::cout << "Apse Line is = " << result;
-	//std::cout << "//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
+	std::cout << "Apse Line is = " << result;
+	std::cout << "//////////////ENDING INTEGRATION FOR ANGLE OF APSE LINE///////////////\n\n\n" << std::endl;
 
 	return result;
 }
@@ -177,9 +166,9 @@ double CollisionDynamics::getPositiveRootW() {
 	//printf("using %s method\n",
 	//	gsl_root_fsolver_name(s));
 
-	//printf("%5s [%9s, %9s] %9s %10s %9s\n",
-	//	"iter", "lower", "upper", "root",
-	//	"err", "err(est)");
+	printf("%5s [%9s, %9s] %9s %10s %9s\n",
+		"iter", "lower", "upper", "root",
+		"err", "err(est)");
 
 	do
 	{
@@ -191,19 +180,19 @@ double CollisionDynamics::getPositiveRootW() {
 		status = gsl_root_test_interval(x_lo, x_hi,
 			0, 0.001);
 
-		//if (status == GSL_SUCCESS)
-			//printf("Converged:\n");
+		if (status == GSL_SUCCESS)
+			printf("Converged:\n");
 
-		//printf("%5d [%.7f, %.7f] %.7f %+.7f %.7f\n",
-		//	iter, x_lo, x_hi,
-		//	r, r - r_expected,
-		//	x_hi - x_lo);
+		printf("%5d [%.7f, %.7f] %.7f %+.7f %.7f\n",
+			iter, x_lo, x_hi,
+			r, r - r_expected,
+			x_hi - x_lo);
 
 		mRoot = r;
 	} while (status == GSL_CONTINUE && iter < max_iter);
 
 	gsl_root_fsolver_free(s);
-	//std::cout << "//////////////ROOT SEARCH END///////////////" << std::endl;
+	std::cout << "//////////////ROOT SEARCH END///////////////" << std::endl;
 
 	return mRoot;
 }
@@ -213,11 +202,15 @@ double CollisionDynamics::getDeflectionAngle() {
 }
 
 Eigen::Vector3d CollisionDynamics::getFinalV1() {
-	Eigen::Vector3d final_cr1((cr1.data()[0] + cr2.data()[0] + finalVa.data()[0])/2, (cr1.data()[1] + cr2.data()[1] + finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] + finalVa.data()[2]) / 2);
-	return final_cr1;
+	//Eigen::Vector3d final_cr1((cr1.data()[0] + cr2.data()[0] + finalVa.data()[0])/2, (cr1.data()[1] + cr2.data()[1] + finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] + finalVa.data()[2]) / 2);
+	//return final_cr1;
+	Eigen::Vector3d cr_m = (cr1 + cr2) / 2;
+	return cr_m + 0.5 * finalVa;
 }
 
 Eigen::Vector3d CollisionDynamics::getFinalV2() {
-	Eigen::Vector3d final_cr2((cr1.data()[0] + cr2.data()[0] - finalVa.data()[0]) / 2, (cr1.data()[1] + cr2.data()[1] - finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] - finalVa.data()[2]) / 2);
-	return final_cr2;
+	//Eigen::Vector3d final_cr2((cr1.data()[0] + cr2.data()[0] - finalVa.data()[0]) / 2, (cr1.data()[1] + cr2.data()[1] - finalVa.data()[1]) / 2, (cr1.data()[2] + cr2.data()[2] - finalVa.data()[2]) / 2);
+	//return final_cr2;
+	Eigen::Vector3d cr_m = (cr1 + cr2) / 2;
+	return cr_m - 0.5 * finalVa;
 }

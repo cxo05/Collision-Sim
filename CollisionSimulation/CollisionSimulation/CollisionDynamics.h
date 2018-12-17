@@ -5,13 +5,12 @@
 class CollisionDynamics
 {
 private:
-	double b, m, c, k, n, deflectionAngle, finalV, epsilon;
+	double b, m, c, k, n, deflectionAngle, epsilon;
 	Eigen::Vector3d cr1, cr2, newV, finalVa;
 	Gas g;
 
 	int OoM(double mRoot);
 public:
-	CollisionDynamics(double b, double m, double c, double k, double n, Gas g);
 	CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2, Eigen::Vector3d newV, double epsilon);
 
 	void extractVariables(Gas g);
