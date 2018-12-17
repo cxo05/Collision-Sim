@@ -33,41 +33,73 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 }
 
 Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1) {
-	double n = 101325 / (273 * k) * mass; //TODO Get n  >>  p = n * (k/m) * T 
+	double n = 101325 / (273 * k); // n  >>  p = n * k * T 
 
 	unsigned seed = (unsigned)std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
-	
-	//Get d
-	std::uniform_real_distribution<double> unif(0 , diameter * diameter);
+
+	// Get d
+	std::uniform_real_distribution<double> unif(0, diameter * diameter);
 	double d = sqrt(unif(generator));
 	std::cout << "d : " << d << std::endl;
 
-	//Get l
-	std::gamma_distribution<double> gamma(1.0, n * 3.1415 * diameter * diameter);
+	// Get l
+	std::gamma_distribution<double> gamma(1.0, 1 / (n * 3.1415 * diameter * diameter));
 	double l = gamma(generator);
+	std::cout << "l : " << l << std::endl;
 
-	Eigen::Vector3d scaled = (l / cr1.norm()) * cr1;
+	Eigen::Vector3d scaled = (l / cr1.norm()) * cr1; // Unit vector
 
-	double angle = atan(d/l);
+	double angle = atan(d / l);
+	double psi = asin(scaled.data()[2] / scaled.norm());
 
-	Eigen::Matrix3d rotationMatrix;
+	Eigen::IOFormat CommaInitFmt(6, Eigen::DontAlignCols, "|", "|", "", "", "", "");
+	Eigen::Vector3d l_prime;
+	if (cos(psi) != 0) {
+		double l_prime_x = (scaled.data()[0] / cos(psi)) * cos(psi + angle);
+		double l_prime_y = (scaled.data()[1] / cos(psi)) * cos(psi + angle);
+		double l_prime_z = (scaled.data()[2] / sin(psi)) * sin(psi + angle);
+
+		l_prime = Eigen::Vector3d(l_prime_x, l_prime_y, l_prime_z);
+		std::cout << "psi = " << psi << std::endl;
+		std::cout << "l : " << scaled.norm() << " | " << scaled.format(CommaInitFmt) << std::endl;
+		std::cout << "l* : " << l_prime.norm() <<  " | " << l_prime.format(CommaInitFmt) << std::endl;
+	}
+	else {
+		double l_prime_z = (scaled.data()[2] / sin(psi)) * sin(psi + angle);
+
+		l_prime = Eigen::Vector3d(0, 0, l_prime_z);
+	}
+	l_prime = (l_prime / l) * (sqrt(pow(d, 2) + pow(l, 2)));
+
+	
+
+	std::cout << "l* = " << l_prime.format(CommaInitFmt) << std::endl;
+
+	/*Eigen::Matrix3d rotationMatrix; //TODO rotation not right (apparently)
 	rotationMatrix << 1, 0, 0,
 		0, cos(angle), -sin(angle),
 		0, sin(angle), cos(angle);
 
-	Eigen::Vector3d raisedByd = rotationMatrix * scaled;
+	Eigen::Vector3d raisedByd = rotationMatrix * scaled; */
 
 	//Generate random angle
 	std::uniform_real_distribution<double> unifAngle(0, 2 * 3.1415);
 	double randomAngle = unifAngle(generator);
 
 	//Rotating raisedByd by random angle about cr1
-	Eigen::Vector3d a_parr_b = raisedByd.dot(cr1) / cr1.dot(cr1) * cr1;
+	/*Eigen::Vector3d a_parr_b = raisedByd.dot(cr1) / cr1.dot(cr1) * cr1;
 	Eigen::Vector3d a_perp_b = raisedByd - a_parr_b;
+	Eigen::Vector3d w = cr1.cross(a_perp_b);*/
+
+	Eigen::Vector3d a_parr_b = scaled;
+	Eigen::Vector3d a_perp_b = l_prime - scaled;
 	Eigen::Vector3d w = cr1.cross(a_perp_b);
 
 	Eigen::Vector3d coord = a_perp_b.norm() * ((cos(randomAngle) / a_perp_b.norm()) * a_perp_b + (sin(randomAngle) / w.norm()) * w) + a_parr_b;
+
+	std::cout << "Checking l* length = " << l_prime.norm() << " |||| sqrt(d^2 + l^2) = " << (sqrt(pow(d, 2) + pow(l, 2))) << " |||| theta = " << angle << " |||| angle between l* and cr = " << acos(l_prime.dot(cr1) / (l_prime.norm() * cr1.norm())) << std::endl;
+	std::cout << "coord = " << coord.data()[0] << "," << coord.data()[1] << "," << coord.data()[2] << std::endl;
 	return coord;
 }
 
