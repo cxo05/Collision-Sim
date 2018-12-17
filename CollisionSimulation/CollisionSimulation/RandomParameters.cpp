@@ -33,7 +33,7 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 }
 
 Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1) {
-	double n = 1; //TODO Get n
+	double n = 101325 / (273 * k) * mass; //TODO Get n  >>  p = n * (k/m) * T 
 
 	unsigned seed = (unsigned)std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);

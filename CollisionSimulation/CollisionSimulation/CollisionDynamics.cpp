@@ -90,12 +90,12 @@ double CollisionDynamics::getApseLine(double mRoot) {
 
 	int pwr = OoM(mRoot);
 
-	double relerr = pow(10, (pwr - 3));
+	double relerr = pow(10, (pwr - 1));
 	//double relerr = 10e-7;
 	//std::cout << "pwr = " << pwr << "   relerr = " << relerr << std::endl;
 
 	double lowerLim = 0., upperLim = mRoot; // limits of integration
-	double abserr = 0.; // requested errors
+	double abserr = pow(10, pwr); // requested errors
 	double result; // the integral value
 	double error; // the error estimate
 
