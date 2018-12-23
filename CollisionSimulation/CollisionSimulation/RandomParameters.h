@@ -10,7 +10,7 @@ public:
 	double get_DRef();
 	double get_CrRef();
 	Eigen::Vector3d get_3D_Cr();
-	Eigen::Vector3d get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1);
+	Eigen::Vector3d get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2);
 	Eigen::Vector3d get_coordinates();
 	double get_B(Eigen::Vector3d a_coord, Eigen::Vector3d b_coord, Eigen::Vector3d newV);
 	~RandomParameters();
@@ -26,6 +26,8 @@ public:
 	double getViscosityIndex();
 	double getDiameter();
 	double getTemperature();
+	double getTimeToCollision();
+	double getD();
 
 private:
 	double k = 1.380658e-23; //Boltzmann_constant
@@ -35,5 +37,9 @@ private:
 	double radius = diameter / 2;
 	double T = 273.0; //Temperature in kelvins
 	double density = 1.292; //Density of air kg/m^3
+	double time;
+	double d;
+
+	Eigen::Vector3d l_prime, l;
 };
 
