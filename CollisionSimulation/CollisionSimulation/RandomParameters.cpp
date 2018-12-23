@@ -151,6 +151,14 @@ void RandomParameters::setTemperature(double T) {
 	this->T = T;
 }
 
+void RandomParameters::setRadius() {
+	radius = diameter / 2;
+}
+
+void RandomParameters::setV() {
+	v = viscosity_index - 0.5;
+}
+
 double RandomParameters::getCoefficientOfViscosity() {
 	return coefficient_of_viscosity;
 }

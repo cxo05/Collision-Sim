@@ -5,8 +5,8 @@
 class RandomParameters {
 public:
 	RandomParameters();
-	double viscosity_index = 0.67;
-	double coefficient_of_viscosity = 0.845e-5; //Hydrogen : 0.845 * 10^-5
+	double viscosity_index;
+	double coefficient_of_viscosity; //Hydrogen : 0.845 * 10^-5
 	double get_DRef();
 	double get_CrRef();
 	Eigen::Vector3d get_3D_Cr();
@@ -20,6 +20,8 @@ public:
 	void setViscosityIndex(double vi);
 	void setDiameter(double diameter);
 	void setTemperature(double T);
+	void setRadius();
+	void setV();
 
 	double getCoefficientOfViscosity();
 	double getMass();
@@ -31,11 +33,11 @@ public:
 
 private:
 	double k = 1.380658e-23; //Boltzmann_constant
-	double mass = 3.34e-27; //Hydrogen : 3.34 * 10^-27 kg
-	double v = viscosity_index - 0.5;
-	double diameter = 2.92e-10; //Hydrogen 2.92 * 10^-10
-	double radius = diameter / 2;
-	double T = 273.0; //Temperature in kelvins
+	double mass; //Hydrogen : 3.34 * 10^-27 kg
+	double v;
+	double diameter; //Hydrogen 2.92 * 10^-10
+	double radius;
+	double T; //Temperature in kelvins
 	double density = 1.292; //Density of air kg/m^3
 	double time;
 	double d;

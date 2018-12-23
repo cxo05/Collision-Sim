@@ -92,8 +92,8 @@ double CollisionDynamics::getApseLine(double mRoot) {
 
 	int pwr = OoM(mRoot);
 
-	double relerr = pow(10, (pwr + 1));
-	//double relerr = 10e-7;
+	//double relerr = pow(10, (pwr));
+	double relerr = 10e-7;
 	//std::cout << "pwr = " << pwr << "   relerr = " << relerr << std::endl;
 
 	double lowerLim = 0., upperLim = mRoot; // limits of integration
@@ -120,7 +120,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	gsl_set_error_handler_off();
 	int status = gsl_integration_qagp(&F2, singular_pts, 2, abserr, relerr, np, w, &result, &error);
 	if (status) {
-		fprintf(stderr, "failed, gsl_errno=%d\n", status);
+		//fprintf(stderr, "failed, gsl_errno=%d\n", gsl_strerror (status));
 		collDyFlag = true;
 	}
 
