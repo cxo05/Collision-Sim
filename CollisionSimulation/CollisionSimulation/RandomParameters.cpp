@@ -8,8 +8,7 @@ RandomParameters::RandomParameters() {
 }
 
 double RandomParameters::get_DRef() {
-	//Currently just set to 1.0
-	return 2.96e-10;
+	return 2.96e-10; //Change according to particle
 }
 
 double RandomParameters::get_CrRef() {
@@ -72,25 +71,11 @@ Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Ei
 	}
 	l_prime = (l_prime / l) * (sqrt(pow(d, 2) + pow(l, 2)));
 
-	
-
 	std::cout << "l* = " << l_prime.format(CommaInitFmt) << std::endl;
-
-	/*Eigen::Matrix3d rotationMatrix; //TODO rotation not right (apparently)
-	rotationMatrix << 1, 0, 0,
-		0, cos(angle), -sin(angle),
-		0, sin(angle), cos(angle);
-
-	Eigen::Vector3d raisedByd = rotationMatrix * scaled; */
 
 	//Generate random angle
 	std::uniform_real_distribution<double> unifAngle(0, 2 * 3.1415);
 	double randomAngle = unifAngle(generator);
-
-	//Rotating raisedByd by random angle about cr1
-	/*Eigen::Vector3d a_parr_b = raisedByd.dot(cr1) / cr1.dot(cr1) * cr1;
-	Eigen::Vector3d a_perp_b = raisedByd - a_parr_b;
-	Eigen::Vector3d w = cr1.cross(a_perp_b);*/
 
 	Eigen::Vector3d a_parr_b = scaled;
 	Eigen::Vector3d a_perp_b = l_prime - scaled;
@@ -100,23 +85,6 @@ Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Ei
 
 	std::cout << "Checking l* length = " << l_prime.norm() << " |||| sqrt(d^2 + l^2) = " << (sqrt(pow(d, 2) + pow(l, 2))) << " |||| theta = " << angle << " |||| angle between l* and cr = " << acos(l_prime.dot(cr1) / (l_prime.norm() * cr1.norm())) << std::endl;
 	std::cout << "coord = " << coord.data()[0] << "," << coord.data()[1] << "," << coord.data()[2] << std::endl;
-	return coord;
-}
-
-Eigen::Vector3d RandomParameters::get_coordinates() {
-	double alpha = 1.35; //1 for now
-	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
-							(5 * (alpha + 1) * (alpha + 2)) * 
-							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density) * 0.08;
-
-	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
-	
-	//Choose 2 points within cube of width meanFreePath
-	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine generator(seed);
-	std::uniform_real_distribution<double> unif(0, meanFreePath);
-	Eigen::Vector3d coord(unif(generator), unif(generator), unif(generator));
 	return coord;
 }
 

@@ -11,7 +11,6 @@ public:
 	double get_CrRef();
 	Eigen::Vector3d get_3D_Cr();
 	Eigen::Vector3d get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1);
-	Eigen::Vector3d get_coordinates();
 	double get_B(Eigen::Vector3d a_coord, Eigen::Vector3d b_coord, Eigen::Vector3d newV);
 	~RandomParameters();
 
