@@ -28,8 +28,10 @@ std::vector<Eigen::Vector3d> VHS::run(double b, double d, Eigen::Vector3d aCoord
 		finalVelocities.push_back(v2);
 	}
 	else {
-		finalVelocities.push_back(Eigen::Vector3d(0,0,0));
-		finalVelocities.push_back(Eigen::Vector3d(0,0,0));
+		//finalVelocities.push_back(Eigen::Vector3d(0,0,0));
+		//finalVelocities.push_back(Eigen::Vector3d(0,0,0));
+		finalVelocities.push_back(u1);
+		finalVelocities.push_back(u2);
 	}
 	
 	//std::cout << "VHS END..." << std::endl;

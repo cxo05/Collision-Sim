@@ -7,8 +7,8 @@ Gas::Gas()
 {
 }
 
-Gas::Gas(double num_factor, double mol_mass, double temp, double viscosity_co, double viscosity_index)
-	: num_factor(num_factor), mol_mass(mol_mass), temp(temp), viscosity_co(viscosity_co), viscosity_index(viscosity_index)
+Gas::Gas(double num_factor, double mol_mass, double temp, double viscosity_co, double viscosity_index, double diameter)
+	: num_factor(num_factor), mol_mass(mol_mass), temp(temp), viscosity_co(viscosity_co), viscosity_index(viscosity_index), diameter(diameter)
 {
 }
 
@@ -30,6 +30,10 @@ double Gas::getViscosity_index()
 double Gas::getTemperature()
 {
 	return temp;
+}
+
+double Gas::getDiameter() {
+	return diameter;
 }
 
 double Gas::getNu()
