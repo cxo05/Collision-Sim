@@ -28,7 +28,7 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	int mean = 0;
-	double standard_deviation = sqrt(1.380658e-23/ 3.34e-27 * 273);
+	double standard_deviation = sqrt(1.380658e-23 * getTemperature() / getMass());
 	std::normal_distribution<double> distribution(mean, standard_deviation);
 	Eigen::Vector3d cr_vector(distribution(generator), distribution(generator), distribution(generator));
 	return cr_vector;
@@ -104,34 +104,6 @@ Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Ei
 		collDyFlag = true;
 		return Eigen::Vector3d(0, 0, 0);
 	}
-}
-
-/*double RandomParameters::get_coordinates_at_origin(Eigen::Vector3d cr1, Eigen::Vector3d cr2, Eigen::Vector3d bcoord) {
-	double delta_l = sqrt(pow(diameter, 2) - pow(d, 2));
-	time_to_collision = (l.norm() - delta_l) / cr1.norm();
-	time_to_collision = (l.norm() - delta_l) / cr1.norm();
-	//Eigen::Vector3d coord(bcoord - (cr2 * time_to_collision));
-	std::cout << "delta_l = " << delta_l;
-	std::cout << "time = " << time_to_collision;
-	//std::cout << "coord = " << coord.data()[0] << "," << coord.data()[1] << "," << coord.data()[2] << std::endl;
-	return time_to_collision;
-}*/
-
-Eigen::Vector3d RandomParameters::get_coordinates() {
-	double alpha = 1.35; //1 for now
-	double meanFreePath = (4*alpha*(5-2* viscosity_index)*(7-2* viscosity_index))/
-							(5 * (alpha + 1) * (alpha + 2)) * 
-							sqrt(mass / (2 * 3.1415 * k * T)) *
-							(coefficient_of_viscosity / density) * 0.08;
-
-	//std::cout << "Mean free path for hydrogen : " << meanFreePath << std::endl;
-	
-	//Choose 2 points within cube of width meanFreePath
-	unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine generator(seed);
-	std::uniform_real_distribution<double> unif(0, meanFreePath);
-	Eigen::Vector3d coord(unif(generator), unif(generator), unif(generator));
-	return coord;
 }
 
 double RandomParameters::get_B(Eigen::Vector3d a_coord, Eigen::Vector3d b_coord, Eigen::Vector3d newV) {
