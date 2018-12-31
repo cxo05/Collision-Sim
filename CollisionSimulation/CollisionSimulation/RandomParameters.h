@@ -19,7 +19,6 @@ public:
 	void setViscosityIndex(double vi);
 	void setDiameter(double diameter);
 	void setTemperature(double T);
-	void setRadius();
 	void setV();
 
 	double getCoefficientOfViscosity();
@@ -35,7 +34,6 @@ private:
 	double mass; //Hydrogen : 3.34 * 10^-27 kg
 	double v;
 	double diameter; //Hydrogen 2.92 * 10^-10
-	double radius;
 	double T; //Temperature in kelvins
 	double density = 1.292; //Density of air kg/m^3
 	double time;
