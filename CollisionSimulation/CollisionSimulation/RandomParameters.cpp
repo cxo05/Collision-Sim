@@ -9,11 +9,6 @@ extern bool collDyFlag;
 RandomParameters::RandomParameters() {
 }
 
-double RandomParameters::get_DRef() {
-	//Currently just set to 1.0
-	return 2.96e-10;
-}
-
 double RandomParameters::get_CrRef() {
 	//Total collision cross section
 	double sigmaT = 3.1415 * diameter * diameter;
@@ -35,7 +30,9 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 }
 
 Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2) {
-	double pressure = 101325;
+	double d;
+	double pressure = (101325 * 273) / getTemperature();
+
 	// n  >>  p = n * k * T 
 	double n = pressure / (T * k); 
 
@@ -161,8 +158,4 @@ double RandomParameters::getTemperature() {
 
 double RandomParameters::getTimeToCollision() {
 	return time;
-}
-
-double RandomParameters::getD() {
-	return d;
 }

@@ -6,8 +6,7 @@ class RandomParameters {
 public:
 	RandomParameters();
 	double viscosity_index;
-	double coefficient_of_viscosity; //Hydrogen : 0.845 * 10^-5
-	double get_DRef();
+	double coefficient_of_viscosity;
 	double get_CrRef();
 	Eigen::Vector3d get_3D_Cr();
 	Eigen::Vector3d get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2);
@@ -27,7 +26,6 @@ public:
 	double getDiameter();
 	double getTemperature();
 	double getTimeToCollision();
-	double getD();
 
 private:
 	double k = 1.380658e-23; //Boltzmann_constant
@@ -37,7 +35,6 @@ private:
 	double T; //Temperature in kelvins
 	double density = 1.292; //Density of air kg/m^3
 	double time;
-	double d;
 
 	Eigen::Vector3d l_prime, l;
 };
