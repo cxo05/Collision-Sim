@@ -31,7 +31,7 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 
 Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2) {
 	double d;
-	double pressure = (101325 * 273) / getTemperature();
+	double pressure = (101325 / 273) * getTemperature();
 
 	// n  >>  p = n * k * T 
 	double n = pressure / (T * k); 

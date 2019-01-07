@@ -29,11 +29,10 @@ public:
 
 private:
 	double k = 1.380658e-23; //Boltzmann_constant
-	double mass; //Hydrogen : 3.34 * 10^-27 kg
+	double mass;
 	double v;
-	double diameter; //Hydrogen 2.92 * 10^-10
-	double T; //Temperature in kelvins
-	double density = 1.292; //Density of air kg/m^3
+	double diameter;
+	double T;
 	double time;
 
 	Eigen::Vector3d l_prime, l;
