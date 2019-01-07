@@ -19,11 +19,11 @@ extern bool collDyFlag;
 	1) Uses root solver to find positive root W (dimensionless coordinate) (Eqn 2.20)
 	2) Inputs positive root W to an integral to find the angle of the apse line (Eqn 2.19)
 	3) Finally finds the deflection angle (Eqn 2.21)
-
 **/
-CollisionDynamics::CollisionDynamics(double b, double c, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2, Eigen::Vector3d newV, double angle )
-	: b(b), c(c), g(g), cr1(cr1), cr2(cr2), newV(newV), epsilon(angle)
+CollisionDynamics::CollisionDynamics(double b, Gas g, Eigen::Vector3d cr1, Eigen::Vector3d cr2, Eigen::Vector3d newV, double angle )
+	: b(b), g(g), cr1(cr1), cr2(cr2), newV(newV), epsilon(angle)
 {
+	c = newV.norm();
 	extractVariables(g);
 	getFinalVelocity(getDeflectionAngle(getApseLine(getPositiveRootW())));
 }
@@ -90,7 +90,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	//std::cout << "//////////////STARTING INTEGRATION ANGLE OF FOR APSE LINE///////////////" << std::endl;
 	//std::cout << "USING ROOT : " << mRoot << std::endl; 
 
-	int pwr = OoM(mRoot);
+	double pwr = OoM(mRoot);
 
 	//double relerr = pow(10, (pwr));
 	double relerr = 10e-7;
@@ -137,7 +137,7 @@ double CollisionDynamics::getApseLine(double mRoot) {
 	return result;
 }
 
-int CollisionDynamics::OoM(double mRoot) {
+double CollisionDynamics::OoM(double mRoot) {
 	return floor(log10(mRoot));
 }
 

@@ -3,15 +3,15 @@
 #include <iostream>
 
 
-VHS::VHS(){
+VHS::VHS(double B, double D){
+	b = B;
+	d = D;
 }
 
-std::vector<Eigen::Vector3d> VHS::run(double b, double d, Eigen::Vector3d aCoord, Eigen::Vector3d bCoord, Eigen::Vector3d u1, Eigen::Vector3d u2) {
-	//std::cout << "VHS START--->" << std::endl;
-
+std::vector<Eigen::Vector3d> VHS::run(Eigen::Vector3d aCoord, Eigen::Vector3d bCoord, Eigen::Vector3d u1, Eigen::Vector3d u2) {
 	std::vector<Eigen::Vector3d> finalVelocities;
 
-	if (collisionCheck(b, d)) {
+	if (collisionCheck()) {
 		//Finding relative position of 1 at contact
 		Eigen::Vector3d newV = u2 - u1;
 		Eigen::Vector3d temPos = (((newV).dot(bCoord - aCoord)) / (newV).dot(newV) * (newV)) + aCoord;
@@ -32,17 +32,24 @@ std::vector<Eigen::Vector3d> VHS::run(double b, double d, Eigen::Vector3d aCoord
 		finalVelocities.push_back(u2);
 	}
 	
-	//std::cout << "VHS END..." << std::endl;
 	return finalVelocities;
 }
 
-bool VHS::collisionCheck(double b, double d) {
+bool VHS::collisionCheck() {
 	if (b < d) {
 		return true;
 	}
 	else {
 		return false;
 	}
+}
+
+double VHS::getDeflectionAngle() {
+	double angle = acos(b / d) * 180 / 3.141592;
+	if (std::isnan(angle)) {
+		angle = 0;
+	}
+	return angle * 2;
 }
 
 VHS::~VHS(){
