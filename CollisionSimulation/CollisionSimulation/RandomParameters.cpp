@@ -29,12 +29,12 @@ Eigen::Vector3d RandomParameters::get_3D_Cr() {
 	return cr_vector;
 }
 
-Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2) {
+Eigen::Vector3d RandomParameters::get_coordinates_at_contact(double n, double diameter, Eigen::Vector3d cr1, Eigen::Vector3d cr2) {
 	double d;
-	double pressure = (101325 / 273) * getTemperature();
-
+	double pressure = (101325. / 273) * getTemperature();
+	
 	// n  >>  p = n * k * T 
-	double n = pressure / (T * k); 
+	n = pressure / (T * k); 
 
 	unsigned seed = (unsigned)std::chrono::system_clock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);

@@ -138,6 +138,7 @@
     <ClInclude Include="A2eta.h" />
     <ClInclude Include="CollisionDynamics.h" />
     <ClInclude Include="Gas.h" />
+    <ClInclude Include="path.h" />
     <ClInclude Include="RandomParameters.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="CollisionDynamics.cpp" />
     <ClCompile Include="CollisionSimulation.cpp" />
     <ClCompile Include="Gas.cpp" />
+    <ClCompile Include="path.cpp" />
     <ClCompile Include="RandomParameters.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
